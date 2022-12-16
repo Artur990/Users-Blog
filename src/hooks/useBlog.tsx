@@ -10,69 +10,43 @@ import {
   where,
 } from "firebase/firestore";
 import { User } from "firebase/auth";
-import { db } from "../firebase/config";
+import { auth, db } from "../firebase/config";
 import { useAuth } from "../context/AuthContext";
-
-// type authot = {
-//   id: string;
-//   userName: string;
-// };
-// type comment = {
-//   userName: string;
-//   createdAT: string;
-//   postText: string;
-// };
-export interface UseBlogProps {
-  user: User | null;
-  createdAT: string;
-  userName: string;
-  postText: string;
-  author: {
-    id: string;
-    userName: string;
-  };
-  comments: {
-    avatat: string;
-    userName: string;
-    createdAT: string;
-    postText: string;
-  };
-}
+import { useAuthState } from "react-firebase-hooks/auth";
+import { PostType } from "../types/postType";
 
 // { user }: UseBlogProps | null
-export const useBlog = (post?: boolean) => {
-  const [blog, setBlog] = useState<any[]>();
-  const { userCurrent } = useAuth();
-
+export const useBlog = (post: boolean) => {
+  const [blog, setBlog] = useState<PostType[]>([]);
+  const { setIsLoading } = useAuth();
+  const [user, loading] = useAuthState(auth);
   useEffect(() => {
+    // const { props } = props;
+    // if (post) {
+    // setIsLoading(true);
+    // }
+    setIsLoading(true);
+    // if (!user) {
+    // return;
+    // }
     const config = {};
-    console.log(userCurrent?.uid);
     const q = query(
       collection(db, "react-blog2"),
-      post
-        ? where("user", "==", userCurrent?.uid)
-        : orderBy("createdAT", "desc")
-      // orderBy("createdAT", "desc")
-      // where("user", "==", userCurrent?.uid)
-      //  : undefined
+      post ? where("user", "==", user?.uid) : orderBy("createdAT", "desc")
     );
 
-    const unSubscribe = onSnapshot(q, (snapshot) => {
-      setBlog(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-    });
+    const unSubscribe = onSnapshot(
+      q,
+      (snapshot: QuerySnapshot<DocumentData>) => {
+        console.log(snapshot.docs);
+        setBlog(
+          snapshot.docs.map((doc: any) => ({ ...doc.data(), id: doc.id }))
+        );
+      }
+    );
+    setIsLoading(false);
     return unSubscribe;
   }, []);
 
   return { blog };
-  // return (
-  //   <div>
-  //     <li>
-  //       {" "}
-  //       {blog?.map((e) => {
-  //         return <li key={e}>{e.name}</li>;
-  //       })}
-  //     </li>
-  //   </div>
-  // );
 };
-// export default UseBlog;

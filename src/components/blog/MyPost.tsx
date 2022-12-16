@@ -16,54 +16,35 @@ import { db, auth } from "../../firebase/config";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useAuth } from "../../context/AuthContext";
 import { useBlog } from "../../hooks/useBlog";
-export interface UseBlogProps {
-  user?: string;
-  createdAT?: string;
-  userName?: string;
-  postText?: string;
-  author?: {
-    avatar: string;
-    email: string;
-  };
-  comments?: {
-    avatat: string;
-    userName: string;
-    createdAT: string;
-    postText: string;
-  };
-  id: string;
-}
+import { PostType } from "../../types/postType";
 
 const MyPost = () => {
   const { setIsLoading } = useAuth();
   const [user, loading] = useAuthState(auth);
-  const [posts, setPosts] = useState<any[]>();
+  const [posts, setPosts] = useState<PostType[]>();
   const postCollectionRef = collection(db, "react-blog2");
-  // const a = [...posts];
+  console.log(posts);
   // const { blog } = useBlog(true);
   const getPosts = async () => {
     if (loading) {
-      return;
+      setIsLoading(true);
     }
     if (!user) {
       return;
     }
-    const q = query(
-      postCollectionRef,
-      where("user", "==", user?.uid)
-      // orderBy("createdAT")
-    );
+
+    const q = query(postCollectionRef, where("user", "==", user?.uid));
     const UnSubscribe = onSnapshot(q, (snapshot) => {
       setPosts(
-        snapshot.docs.map((doc) => ({
-          ...(doc.data() as any[]),
+        snapshot.docs.map((doc: any) => ({
+          ...doc.data(),
           id: doc.id,
         }))
       );
     });
+    setIsLoading(false);
     return UnSubscribe;
   };
-  // console.log(blog);
   const deletePost = async (id: string) => {
     setIsLoading(true);
     try {
@@ -78,7 +59,6 @@ const MyPost = () => {
   useEffect(() => {
     getPosts();
   }, [user, loading]);
-  console.log(posts);
   return (
     <>
       <Container maxWidth="sm" sx={{ marginTop: 2 }}>
@@ -97,11 +77,9 @@ const MyPost = () => {
                 <IconButton size="small" sx={{ ml: 2 }}>
                   <Avatar
                     sx={{ width: 32, height: 32 }}
-                    src={e.author[0].avatar ? e.author[0].avatar : ""}
+                    src={e?.author[0]?.avatar ? e.author[0].avatar : ""}
                   >
-                    {e.author?.avatar}
-                    {/* {e?.userName?.charAt(0)?.toUpperCase() ||  */}
-                    {/* e?.author.email?.charAt(0)?.toUpperCase()}  */}
+                    {e.author[0]?.avatar}
                   </Avatar>
                 </IconButton>
                 <Typography variant="h6" component="h3">

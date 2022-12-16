@@ -12,22 +12,16 @@ import {
   updateEmail,
   EmailAuthProvider,
   reauthenticateWithCredential,
+  updateProfile,
+  AuthError,
 } from "firebase/auth";
-import {
-  addDoc,
-  collection,
-  deleteDoc,
-  doc,
-  onSnapshot,
-  orderBy,
-  query,
-  where,
-} from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc } from "firebase/firestore";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 import { AppContextInterface } from "../types/AppContextInterface";
 import { auth, db } from "../firebase/config";
+import moment from "moment";
 
 export const AuthContext = createContext<AppContextInterface>(
   {} as AppContextInterface
@@ -41,19 +35,15 @@ interface Props {
 }
 export const AuthContextProvider: React.FC<Props> = ({ children }) => {
   const navigate = useNavigate();
-  const [userCurrent, setUserCurrent] = useState<User | null>(null);
-  const [blog, setBlog] = useState<any>();
-  // const [isOpen, setIsOpen] = useState(false);
-  // const [isRegister, setIsRegister] = useState(false);
+  const [currentUsers, setcurrentUsers] = useState<User | null>(null);
   const [isReAuth, setisReAuth] = useState(false);
-  //userCurrent.isAdmin && <button>edit</button>
   const [isLoading, setIsLoading] = useState(false);
-  const collectionRef = collection(db, "users");
+  const collectionRef = collection(db, "Users");
   const signUp = async (
     email: string,
+    name: string,
     password: string,
-    photoNumber: string,
-    name: string
+    phoneNumber: string
   ) => {
     setIsLoading(true);
     try {
@@ -62,12 +52,14 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
         email,
         password
       );
-      setUserCurrent(userCredentials.user);
+      console.log(name);
+      setcurrentUsers(userCredentials.user);
       addDoc(collectionRef, {
+        id: moment().format(),
         name: name,
         email: email,
         password: password,
-        photoNumber: photoNumber,
+        phoneNumber: phoneNumber,
         uid: userCredentials.user.uid,
         photoURL: "",
         isAdmin: false,
@@ -77,8 +69,9 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
       toast.success("Zostałeś zarejstrowany");
       return userCredentials;
     } catch (err) {
-      console.error(err);
-      toast.error("ten email jest nie ważny");
+      console.error(err as AuthError);
+
+      toast.error("coś poszło nie tak");
       return null;
     } finally {
       setIsLoading(false);
@@ -92,7 +85,7 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
         email,
         password
       );
-      setUserCurrent(userCredentials.user);
+      setcurrentUsers(userCredentials.user);
       toast.success("Zostałeś zalogowany");
     } catch (err) {
       console.error(err, "dsa");
@@ -105,7 +98,7 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
     setIsLoading(true);
     try {
       await signOut(auth);
-      setUserCurrent(null);
+      setcurrentUsers(null);
       toast.success("Zostałeś wylogowany");
     } catch (error) {
     } finally {
@@ -120,7 +113,7 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
       name: auth.name,
       email: auth?.currentUser?.email,
       password: "",
-      photoNumber: auth?.currentUser?.phoneNumber,
+      phoneNumber: auth?.currentUser?.phoneNumber,
       uid: auth?.currentUser?.uid,
       photoURL: "",
       isAdmin: false,
@@ -130,14 +123,14 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
   const reAuth = async (password: string) => {
     setIsLoading(true);
     const credential = EmailAuthProvider.credential(
-      userCurrent?.email as string,
+      currentUsers?.email as string,
       password
     );
     try {
       setisReAuth(true);
-      console.log(userCurrent);
-      if (userCurrent) {
-        await reauthenticateWithCredential(userCurrent, credential);
+      console.log(currentUsers);
+      if (currentUsers) {
+        await reauthenticateWithCredential(currentUsers, credential);
       }
       navigate("/accountSettings");
     } catch (error) {
@@ -150,8 +143,8 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
   const upDatePassword = async (password: string) => {
     setIsLoading(true);
     try {
-      if (userCurrent) {
-        updatePassword(userCurrent, password);
+      if (currentUsers) {
+        updatePassword(currentUsers, password);
       }
       toast.success("Twoj hasło zostało zmienione");
       navigate("/");
@@ -165,8 +158,8 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
   const upDateEmail = async (email: string) => {
     setIsLoading(true);
     try {
-      if (userCurrent) {
-        await updateEmail(userCurrent, email);
+      if (currentUsers) {
+        await updateEmail(currentUsers, email);
       }
       toast.success("Twoj email zostało zmienione");
     } catch (error) {
@@ -178,9 +171,9 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
   const deleteAccount = async () => {
     setIsLoading(true);
     try {
-      if (userCurrent) {
-        await deleteUser(userCurrent);
-        await deleteDoc(doc(db, "Users", userCurrent.uid));
+      if (currentUsers) {
+        await deleteUser(currentUsers);
+        await deleteDoc(doc(db, "Users", currentUsers.uid));
         // await deleteDoc(doc(db, "Users", ));
       }
       toast.success("Twoj konto zostało usunięte");
@@ -190,41 +183,27 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
       setIsLoading(false);
     }
   };
-  const deletePost = async (id: string) => {
-    try {
-      await deleteDoc(doc(db, "react-blog2", id));
-      console.log("post został usunięty ");
-    } catch (error) {
-      console.log("z usuwaniem poszło coś nie tak");
-    }
-    //post.id
+  const upDateProfil = async (props: any) => {
+    // try {
+    //   if (currentUsers) {
+    //     await updateProfile(currentUsers, props);
+    //   }
+    // } catch (error) {}
+    // updateUser();
   };
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       if (firebaseUser) {
-        setUserCurrent(firebaseUser);
+        setcurrentUsers(firebaseUser);
       }
+      console.log(auth);
       console.log("user status changed");
-      console.log(auth.currentUser);
     });
     return unsubscribe;
   }, []);
-  useEffect(() => {
-    const config = {};
-    const q = query(
-      collection(db, "react-blog2"),
-      // orderBy("createdAT", "desc")
-      where("user", "==", `'${auth.currentUser?.uid}'`)
-      // add userCurent
-    );
-    // const unSubscribe = onSnapshot(q, (snapshot) => {
-    // setBlog(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-    // });
-    // return unSubscribe;
-  }, []);
 
   const value = {
-    userCurrent,
+    currentUsers,
     signUp,
     login,
     logout,
@@ -232,13 +211,12 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
     upDateEmail,
     upDatePassword,
     deleteAccount,
-    deletePost,
+    upDateProfil,
     isLoading,
     setIsLoading,
     reAuth,
     isReAuth,
     setisReAuth,
-    blog,
   };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

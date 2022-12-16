@@ -7,46 +7,27 @@ import { addDoc, collection } from "firebase/firestore";
 import { db } from "../../firebase/config";
 import { useAuth } from "../../context/AuthContext";
 import toast from "react-hot-toast";
-import { User } from "firebase/auth";
 
-export interface UseBlogProps {
-  user?: string;
-  createdAT?: string;
-  userName?: string;
-  postText?: string;
-  author?: {
-    avatar?: string;
-    email?: string;
-  };
-  comments?: {
-    avatat: string;
-    userName: string;
-    createdAT: string;
-    postText: string;
-  };
-  id: string;
-}
 const CreatePost = () => {
   const navigate = useNavigate();
-  const { userCurrent, setIsLoading } = useAuth();
-  const [post, setPost] = useState<any>();
+  const { currentUsers, setIsLoading } = useAuth();
+  const [post, setPost] = useState<string>();
   console.log(post);
 
   const submitPost = async () => {
-    // e.prevendDefault();
-    // setIsLoading(true);
+    setIsLoading(true);
     try {
       const postCollectionRef = collection(db, "react-blog2");
       await addDoc(postCollectionRef, {
         createdAT: moment().format(),
-        userName: userCurrent?.email,
-        user: userCurrent?.uid,
+        userName: currentUsers?.email,
+        user: currentUsers?.uid,
         postText: post,
         comments: [],
         author: [
           {
-            avatar: userCurrent?.photoURL,
-            email: userCurrent?.email,
+            avatar: currentUsers?.photoURL,
+            email: currentUsers?.email,
           },
         ],
       });

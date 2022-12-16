@@ -1,22 +1,43 @@
-import { DialogActions, DialogContent, DialogContentText } from "@mui/material";
+import {
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  TextField,
+} from "@mui/material";
 import { Close } from "@mui/icons-material";
 import { Dialog, DialogTitle, IconButton } from "@mui/material";
-import { updateEmail } from "firebase/auth";
-import { useRef } from "react";
 import { useAuth } from "../../../context/AuthContext";
-// import EmailField from "../inputs/EmailField";
-// import SubmitButton from "../inputs/SubmitButton";
 import { useNavigate } from "react-router-dom";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import SubmitButton from "../input/SubmitButton";
+import { toast } from "react-hot-toast";
+
+export const ChangeEmailSchema = z.object({
+  email: z.string().email("wpisz poprawny adres").min(5).max(15),
+});
+
+type ChangeEmailSchemaType = z.infer<typeof ChangeEmailSchema>;
+
 const ChangeEmail = () => {
   const { upDateEmail, setisReAuth } = useAuth();
   const navigate = useNavigate();
-  const handleSubmit = async () => {
-    // e.preventDefault();
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm<ChangeEmailSchemaType>({
+    resolver: zodResolver(ChangeEmailSchema),
+  });
+
+  const submit = async ({ email }: ChangeEmailSchemaType) => {
     try {
-      // upDateEmail()
-      // await updateEmail(currentUser, emailRef.current.value);
+      upDateEmail(email);
+      navigate("/");
+      toast.success("Twoj email zostało zmienione");
     } catch (error) {
-      console.log(error);
+      toast.error("coś poszło nie tak");
     }
   };
   const handlerClose = async () => {
@@ -26,7 +47,7 @@ const ChangeEmail = () => {
   return (
     <Dialog open={true}>
       <DialogTitle>
-        Chenge Email
+        Zmień email
         <IconButton
           aria-label="Close"
           onClick={handlerClose}
@@ -38,19 +59,27 @@ const ChangeEmail = () => {
           }}
         >
           <Close />
-          {/* close */}
         </IconButton>
       </DialogTitle>
-      {/* {location === "modal" && <Notify />} */}
-      {/* Błąd podczas logowania */}
-      <form
-      // onSubmit={handleSubmit}
-      >
+
+      <form onSubmit={handleSubmit(submit)}>
         <DialogContent dividers>
-          <DialogContentText>Please Enter your new email:</DialogContentText>
-          {/* <EmailField {...{ emailRef, defaultValue: currentUser?.email }} /> */}
+          <DialogContentText>Wpisz swój nowy email:</DialogContentText>
+          <TextField
+            id="email"
+            label="email"
+            {...register("email")}
+            required={true}
+            type="email"
+            placeholder="Enter email"
+            defaultValue=""
+            error={!!errors.email?.message}
+            helperText={errors.email && errors.email.message}
+          />
         </DialogContent>
-        <DialogActions>{/* <SubmitButton /> */}</DialogActions>
+        <DialogActions>
+          <SubmitButton>Wyślij</SubmitButton>
+        </DialogActions>
       </form>
     </Dialog>
   );

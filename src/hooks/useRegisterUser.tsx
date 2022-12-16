@@ -11,24 +11,23 @@ type A = { v: string };
 
 export const useRegisterUser = ({ onError, onSuccess }: ResultHandler) => {
   const navigate = useNavigate();
-  const { signUp, userCurrent } = useAuth();
+  const { signUp, currentUsers } = useAuth();
   const { handleSubmit, ...form } = useForm<RegisterSchemaType>({
     resolver: zodResolver(RegisterSchema),
   });
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const collectionRef = collection(db, "Users");
   const handleRegisterUser = ({
+    name,
     email,
     password,
     confirmPassword,
-    photoNumber,
-    name,
+    phoneNumber,
   }: RegisterSchemaType) => {
     setIsLoading(true);
-    console.log(email, password, confirmPassword, photoNumber, name);
+    console.log(name);
     try {
       console.log("rejsestracja...");
-      signUp(email, password, confirmPassword, photoNumber, name);
+      signUp(email, name, password, phoneNumber);
 
       onSuccess?.();
     } catch (err) {

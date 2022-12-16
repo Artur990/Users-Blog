@@ -3,112 +3,100 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
+  Typography,
 } from "@mui/material";
-import { GoogleAuthProvider, reauthenticateWithPopup } from "firebase/auth";
+
 import { Close } from "@mui/icons-material";
 import { Dialog, DialogTitle, IconButton } from "@mui/material";
 import { useAuth } from "../../../context/AuthContext";
-import ChangeEmail from "./ChangeEmail";
-import DeleteAccount from "./DeleteAccount";
-import ReAuth from "./ReAuth";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+// import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const AccountSettings = () => {
   const navigate = useNavigate();
-  const { userCurrent, setisReAuth } = useAuth();
+  const { currentUsers, setisReAuth } = useAuth();
 
   const isPasswordProvider =
-    userCurrent?.providerData[0].providerId === "password";
+    currentUsers?.providerData[0].providerId === "password";
 
-  // const handleAction = async (action) => {
-  //   if (isPasswordProvider) {
-  //     // setModal({
-  //     //   ...modal,
-  //     //   title: "Re-Login",
-  //     //   content: <ReAuth {...{ action }} />,
-  //     // });
-  //   } else {
-  //     try {
-  //       await reauthenticateWithPopup(userCurrent!, new GoogleAuthProvider());
-  //       switch (action) {
-  //         case "changeEmail":
-  //           navigate("/changeEmail");
-  //           // setModal({
-  //           //   ...modal,
-  //           //   title: "Update Email",
-  //           //   content: <ChangeEmail />,
-  //           // });
-  //           break;
-  //         case "deleteAccount":
-  //           navigate("/changeEmail");
-  //           // setModal({
-  //           //   ...modal,
-  //           //   title: "Delete Account",
-  //           //   content: <DeleteAccount />,
-  //           // });
-  //           break;
-  //         default:
-  //           throw new Error("No matching action");
-  //       }
-  //     } catch (error) {
-  //       // setAlert({
-  //       //   isAlert: true,
-  //       //   severity: "error",
-  //       //   message: error.message,
-  //       //   timeout: 5000,
-  //       //   location: "modal",
-  //       // });
-  //       console.log(error);
-  //     }
-  //   }
-  // };
   const handlerClose = async () => {
     navigate("/");
     setisReAuth(false);
   };
   return (
     <>
-      <Dialog
-        open={true}
-        // onClose={handleClose}
-      >
+      <Dialog open={true}>
         <DialogTitle>
-          Account Settings
-          <Link to="/">
-            <IconButton
-              onClick={handlerClose}
-              aria-label="Close"
-              sx={{
-                position: "absolute",
-                top: 8,
-                right: 8,
-                color: (theme) => theme.palette.grey[500],
-              }}
-            >
-              <Close />
-              {/* close */}
-            </IconButton>
-          </Link>
+          Ustawienia konta:
+          <IconButton
+            onClick={handlerClose}
+            aria-label="Close"
+            sx={{
+              position: "absolute",
+              top: 8,
+              right: 8,
+              color: (theme) => theme.palette.grey[500],
+            }}
+          >
+            <Close />
+            {/* close */}
+          </IconButton>
         </DialogTitle>
-        <DialogContent dividers>
-          <DialogContentText>
-            For security reason, you need to provide your credentials to do any
-            of these actions:
-          </DialogContentText>
-        </DialogContent>
+        <DialogContent dividers></DialogContent>
         <DialogActions sx={{ flexDirection: "column", gap: 2, my: 2 }}>
           {isPasswordProvider && (
-            <Link to="/changePassword">
-              <Button>Change Password</Button>
+            <Link style={{ textDecoration: "none" }} to="/changePassword">
+              <Typography
+                sx={{
+                  mr: 2,
+
+                  fontFamily: "monospace",
+                  fontWeight: 700,
+                  letterSpacing: ".3rem",
+                  color: "black",
+                  textDecoration: "none",
+                }}
+              >
+                Zmień hasło
+              </Typography>
             </Link>
           )}
-          <Link to="/changeEmail">
-            <Button>Change Email</Button>
+          <Link style={{ textDecoration: "none" }} to="/changeEmail">
+            {/* <Typography
+              noWrap
+              sx={{
+                mr: 2,
+                display: { xs: "none", md: "flex" },
+                fontFamily: "monospace",
+                fontWeight: 700,
+                letterSpacing: ".3rem",
+                color: "black",
+                textDecoration: "none",
+              }}
+            >
+              Zmień adres email
+            </Typography> */}
+            Zmień adres email
           </Link>
 
-          <Link to="/delateAccount">
-            <Button>Delete Account</Button>
+          <Link style={{ textDecoration: "none" }} to="/delateAccount">
+            <Typography
+              // variant="h6"
+              noWrap
+              // component="a"
+              // href="/delateAccount"
+              sx={{
+                mr: 2,
+
+                fontFamily: "monospace",
+                fontWeight: 700,
+                letterSpacing: ".3rem",
+                color: "black",
+                textDecoration: "none",
+              }}
+            >
+              Usuń konto
+            </Typography>
           </Link>
         </DialogActions>
       </Dialog>

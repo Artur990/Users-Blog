@@ -6,9 +6,10 @@ import {
 } from "@mui/material";
 import { Close } from "@mui/icons-material";
 import { Dialog, DialogTitle, IconButton } from "@mui/material";
-import PasswordFiled2 from "../input/PasswordFiled2";
+
 import SubmitButton from "../input/SubmitButton";
 import { useReAuthUser } from "../../../hooks/useReAuth";
+import Input from "../input/Input";
 
 const ReAuth = () => {
   const {
@@ -25,7 +26,7 @@ const ReAuth = () => {
   return (
     <Dialog open={true}>
       <DialogTitle>
-        Re-Auth
+        Potwierdź hasło
         <IconButton
           aria-label="Close"
           href="/"
@@ -43,22 +44,21 @@ const ReAuth = () => {
       <form onSubmit={handleReAuthSchema}>
         <DialogContent dividers>
           <DialogContentText>
-            Please Enter your current Password:
+            Ze względów bezpieczeństwa musisz podać swoje hasło::
           </DialogContentText>
-          <PasswordFiled2
+          <Input
             id="password"
             label="password"
-            register={register}
-            required={true}
+            {...register("password", { required: true })}
             type="password"
             placeholder=""
             defaultValue=""
             error={!!errors.password?.message}
-            helperText={errors.password && errors.password.message}
+            // helperText={errors.password && errors.password.message}
           />
         </DialogContent>
         <DialogActions>
-          <SubmitButton>Submit</SubmitButton>
+          <SubmitButton>Wyślij</SubmitButton>
           <Button />
         </DialogActions>
       </form>

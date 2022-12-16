@@ -21,7 +21,7 @@ const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 const Navbar: React.FC = () => {
-  const { userCurrent, logout } = useAuth();
+  const { currentUsers, logout } = useAuth();
 
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
@@ -72,7 +72,7 @@ const Navbar: React.FC = () => {
             }}
             // onClick={hadleLogeout}
           >
-            Plotkuś
+            CO słychać ?
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
@@ -140,7 +140,7 @@ const Navbar: React.FC = () => {
               textDecoration: "none",
             }}
           >
-            CO tam słychać ?
+            CO słychać ?
           </Typography>
           {/* <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
@@ -154,7 +154,7 @@ const Navbar: React.FC = () => {
             ))}
           </Box> */}
 
-          {userCurrent?.email ? (
+          {currentUsers?.email ? (
             <Box sx={{ flexGrow: 0 }}>
               <Button variant="outlined" href="/dodajPost" sx={{ margin: 2 }}>
                 Post
@@ -162,12 +162,12 @@ const Navbar: React.FC = () => {
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   <Avatar
-                    src={userCurrent.photoURL ? userCurrent.photoURL : ""}
+                    src={currentUsers.photoURL ? currentUsers.photoURL : ""}
                   >
-                    {/* { userCurrent?.name?.charAt(0)?.toUpperCase() ||  */}
-                    {/* {(!userCurrent.photoURL && */}
-                    {/* userCurrent?.email?.charAt(0)?.toUpperCase()) */}
-                    {/* userCurrent?.name?.charAt(0)?.toUpperCase()} */}
+                    {/* { currentUsers?.name?.charAt(0)?.toUpperCase() ||  */}
+                    {/* {(!currentUsers.photoURL && */}
+                    {/* currentUsers?.email?.charAt(0)?.toUpperCase()) */}
+                    {/* currentUsers?.name?.charAt(0)?.toUpperCase()} */}
                   </Avatar>
                 </IconButton>
               </Tooltip>

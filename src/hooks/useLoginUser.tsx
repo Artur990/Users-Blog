@@ -11,17 +11,18 @@ type A = { v: string };
 export const useLoginUser = ({ onError, onSuccess }: ResultHandler) => {
   const navigate = useNavigate();
   const { login, upDatePassword } = useAuth();
-  const { handleSubmit, setValue, ...form } = useForm<any>({
+  const { handleSubmit, setValue, ...form } = useForm<LoginSchemaType>({
     resolver: zodResolver(LoginSchema),
   });
 
   // useEffect(()=>{setValue('imie',user.name)},[isEditing])
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const handleLoginUser = ({ email, password }: any) => {
+  const handleLoginUser = ({ email, password }: LoginSchemaType) => {
     setIsLoading(true);
     // const credential = EmailAuthProvider.credential(email, password);
     try {
+      console.log(email, password);
       console.log("logowanie...");
       // if(login)
       //  const user =
@@ -32,6 +33,7 @@ export const useLoginUser = ({ onError, onSuccess }: ResultHandler) => {
       onSuccess?.();
     } catch (err) {
       onError?.(err as Error);
+      console.log("error");
     } finally {
       // console.log("error finally");
 

@@ -2,7 +2,6 @@ import {
   Avatar,
   Button,
   IconButton,
-  Input,
   Paper,
   TextField,
   Typography,
@@ -14,9 +13,9 @@ import { useLoaderData } from "react-router-dom";
 import { db } from "../../firebase/config";
 import { useAuth } from "../../context/AuthContext";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
-import { type } from "@testing-library/user-event/dist/type";
+import { PostType } from "../../types/postType";
 import moment from "moment";
+
 export const blogLoader = async ({ params }: any) => {
   const docRef = doc(db, "react-blog2", params.id);
   const docSnap = await getDoc(docRef);
@@ -29,18 +28,15 @@ type Comment = {
   createdAT: string;
 };
 const Post = () => {
-  const { userCurrent, setIsLoading } = useAuth();
+  const { currentUsers, setIsLoading } = useAuth();
   const [messaeg, setMessage] = useState<string>();
   const [allmessaege, setAllMessage] = useState<Comment[]>();
-  const id = useLoaderData() as any;
-  const navigate = useNavigate();
+  const id = useLoaderData() as PostType;
 
   const handlerInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     setMessage(e.target.value);
-    console.log(e.target.value);
   };
-
   const postRef = doc(db, "react-blog2", id.id);
   const submitPost = async () => {
     setIsLoading(true);
@@ -54,7 +50,7 @@ const Post = () => {
           ...id.comments,
           {
             id: Math.random(),
-            userName: userCurrent?.email,
+            userName: currentUsers?.email,
             comment: messaeg,
             createdAT: moment().format(),
           },
@@ -78,11 +74,9 @@ const Post = () => {
   };
 
   useEffect(() => {
-    // if (!router.isReady) return;
     getComments();
   }, []);
 
-  console.log(allmessaege);
   return (
     <>
       <Container maxWidth="sm" sx={{ marginTop: 2 }}>

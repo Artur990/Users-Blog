@@ -1,4 +1,3 @@
-import { async } from "@firebase/util";
 import { Send, Close } from "@mui/icons-material";
 import {
   Button,
@@ -10,32 +9,26 @@ import {
   IconButton,
 } from "@mui/material";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
+import { useHandlerClose } from "../../../hooks/useHandlerClose";
 import { useAuth } from "../../../context/AuthContext";
 
 const DeleteAccount = () => {
-  const { deleteAccount, setisReAuth } = useAuth();
-  const navigate = useNavigate();
+  const { deleteAccount } = useAuth();
+  const { handlerClose } = useHandlerClose();
   const handleSubmit = async () => {
     try {
       deleteAccount();
-      toast.success("Your account has been deleted");
+      toast.success("Twoje konot zostało usunięte");
     } catch (error) {
-      console.log(error);
+      toast.success("Coś poszło nie tak");
     }
   };
-  const handlerClose = async () => {
-    navigate("/");
-    setisReAuth(false);
-  };
   return (
-    <Dialog
-      open={true}
-      // onClose={handleClose}
-    >
+    <Dialog open={true}>
       <DialogTitle>
-        Delate Account
+        Usuń konto
         <IconButton
           aria-label="Close"
           onClick={handlerClose}
@@ -47,22 +40,18 @@ const DeleteAccount = () => {
           }}
         >
           <Close />
-          {/* close  */}
         </IconButton>
       </DialogTitle>
-      {/* {location === "modal" && <Notify />} */}
-      {/* Błąd podczas logowania */}
 
       <form onSubmit={handleSubmit}>
         <DialogContent dividers>
           <DialogContentText>
-            Are you sure you want to delete your account? This action will delte
-            all of your files and records
+            Czy jesteś pewny, że chcesz usunąc swoje konto?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button variant="contained" endIcon={<Send />} type="submit">
-            Confirm
+            Potwierdzam
           </Button>
         </DialogActions>
       </form>

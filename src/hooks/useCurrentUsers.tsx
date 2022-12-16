@@ -40,26 +40,26 @@ export interface UseBlogProps {
 }
 
 // { user }: UseBlogProps | null
-export const useUserCurrent = (post?: boolean) => {
-  const [cuser, setCuser] = useState<any[]>();
-  const { userCurrent } = useAuth();
+export const useCurrentUsers = (post?: boolean) => {
+  const [user, setUser] = useState<any[]>();
+  const { currentUsers } = useAuth();
 
   useEffect(() => {
     const config = {};
-    console.log(userCurrent?.uid);
+    console.log(currentUsers?.uid);
     const q = query(
       collection(db, "Users")
-      // where("user", "==", userCurrent?.uid)
+      // where("user", "==", currentUsers?.uid)
       // orderBy("createdAT", "desc")
-      // where("user", "==", userCurrent?.uid)
+      // where("user", "==", currentUsers?.uid)
       //  : undefined
     );
 
     const unSubscribe = onSnapshot(q, (snapshot) => {
-      setCuser(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      setUser(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     });
     return unSubscribe;
   }, []);
 
-  return { cuser };
+  return { user };
 };

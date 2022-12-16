@@ -12,7 +12,7 @@ export const RegisterSchema = z
     //   "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
     // ),
     confirmPassword: z.string().min(5, { message: "hasło jest zbyt krótkie" }),
-    photoNumber: z.string(),
+    phoneNumber: z.string(),
 
     // isOptional.neOf("password", "Passwords must match")
   })

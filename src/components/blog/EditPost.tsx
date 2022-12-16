@@ -9,29 +9,36 @@ import { collection, doc, getDoc, updateDoc } from "firebase/firestore";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { useLoaderData, useNavigate } from "react-router-dom";
-import { idText } from "typescript";
 import { useAuth } from "../../context/AuthContext";
-import { auth } from "../../firebase/config";
-import { db } from "../../firebase/config";
+import { db, auth } from "../../firebase/config";
+import { PostType } from "../../types/postType";
+
+// type Params = {
+//   post: string;
+// };
+interface Params {
+  post: string;
+}
 export const postLoader = async ({ params }: any) => {
   const docRef = doc(db, "react-blog2", params.post);
+  console.log(typeof params);
   const docSnap = await getDoc(docRef);
-  return { ...docSnap.data(), id: docSnap.id };
+  return { ...docSnap.data(), params, id: docSnap.id };
 };
 const EditPost = () => {
-  const post = useLoaderData() as any;
-  console.log(post.postText);
-  const postRef = doc(db, "react-blog2", post.id);
+  const post = useLoaderData() as PostType;
+  console.log(post);
   const navigate = useNavigate();
-  const { userCurrent } = useAuth();
-  const [posts, setPost] = useState<any>(post.postText);
-  console.log(post.id);
+  const [posts, setPost] = useState<string>(post.postText);
   const postCollectionRef = doc(db, "react-blog2", post.id);
   const submitPost = async () => {
     // e.preventDefault();
     try {
       await updateDoc(postCollectionRef, {
         postText: posts,
+        // author: {
+        // avatar: currentUsers?.photoURL,
+        // },
       });
       console.log(auth.currentUser?.uid);
       setPost("");

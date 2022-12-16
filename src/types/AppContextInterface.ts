@@ -1,13 +1,11 @@
 import { User } from "firebase/auth";
 export interface AppContextInterface {
-  userCurrent: User | null;
-  blog: any;
+  currentUsers: User | null;
   signUp: (
     email: string,
-    password: string,
-    confirmPassword: string,
     name: string,
-    photoNumber: string
+    password: string,
+    phoneNumber: string
   ) => void;
   login: (email: string, password: string) => void;
   logout: () => void;
@@ -16,13 +14,10 @@ export interface AppContextInterface {
   upDateEmail: (email: string) => void;
   reAuth: (password: string) => void;
   deleteAccount: () => void;
-  deletePost: (id: string) => void;
+
+  upDateProfil: (props: any) => void;
   isLoading: boolean;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  // isOpen: boolean;
-  // setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  // setIsRegister: React.Dispatch<React.SetStateAction<boolean>>;
-  // isRegister: boolean;
   setisReAuth: React.Dispatch<React.SetStateAction<boolean>>;
   isReAuth: boolean;
 }

@@ -1,6 +1,7 @@
-import { Close } from "@mui/icons-material";
+import { Close, Send } from "@mui/icons-material";
 import {
   Avatar,
+  Button,
   Dialog,
   DialogActions,
   DialogContent,
@@ -18,15 +19,19 @@ import { db, storage } from "../firebase/config";
 import { updateProfile } from "firebase/auth";
 import uploadFile from "../firebase/uploadFile";
 import deleteFile from "../firebase/deleteFile";
+import User from "firebase/auth";
 import { collection, query, where } from "firebase/firestore";
+import updateUserRecords from "../firebase/updateUserRecords";
+import { toast } from "react-hot-toast";
 const Profile = () => {
-  const { userCurrent, setIsLoading } = useAuth();
+  const { currentUsers, setIsLoading } = useAuth();
 
-  const [name, setName] = useState(userCurrent?.displayName);
+  const [name, setName] = useState(currentUsers?.displayName);
   const [file, setFile] = useState<any | null>(null);
-  const [photoURL, setPhotoURL] = useState<any>(userCurrent?.photoURL);
+  const [photoURL, setPhotoURL] = useState<any>(currentUsers?.photoURL);
+
   // const postCollectionRef = doc(db, "Users", props.id);
-  // const q = query(collection(db, "react-blog2"),where("user", "==", userCurrent.uid)
+  // const q = query(collection(db, "react-blog2"),where("user", "==", currentUsers.uid)
 
   // );
   const navigate = useNavigate();
@@ -37,54 +42,50 @@ const Profile = () => {
       setPhotoURL(URL.createObjectURL(file));
     }
   };
-  console.log(file);
+
   const handleSubmit = async () => {
-    // e.preventDefault();
     setIsLoading(true);
 
-    let userObj = { displayName: name };
+    let userObj = { displayName: name, isAdmin: false };
     let imagesObj = { uName: name };
-    console.log("jest ok 1");
     try {
-      console.log("jest ok 2");
       if (file) {
-        console.log("jest ok 3");
         const imageName = uuidv4() + "." + file?.name?.split(".")?.pop();
         const url = await uploadFile(
           file,
-          `profile/${userCurrent?.uid}/${imageName}`
+          `profile/${currentUsers?.uid}/${imageName}`
         );
 
-        if (userCurrent?.photoURL) {
-          console.log("jest ok 3.5");
-          const prevImage = userCurrent?.photoURL
-            ?.split(`${userCurrent?.uid}%2F`)[1]
+        if (currentUsers?.photoURL) {
+          const prevImage = currentUsers?.photoURL
+            ?.split(`${currentUsers?.uid}%2F`)[1]
             .split("?")[0];
-          // if (prevImage) {
           try {
-            await deleteFile(`profile/${userCurrent?.uid}/${prevImage}`);
+            await deleteFile(`profile/${currentUsers?.uid}/${prevImage}`);
           } catch (error) {
             console.log(error);
           }
-          // }
         }
 
-        userObj = { photoURL: url } as any;
-        // imagesObj = { ...imagesObj, uPhoto: url };
+        userObj = { photoURL: url, isAdmin: true } as any;
+        imagesObj = { ...imagesObj, uPhoto: url } as any;
       }
 
-      await updateProfile(userCurrent!, userObj);
+      await updateProfile(currentUsers!, userObj);
       // await updateDoc(postCollectionRef, {});
-      // await updateUserRecords('gallery', currentUser?.uid, imagesObj);
-      console.log("wykonnao");
-      console.log("jest ok 4");
+      if (currentUsers) {
+        await updateUserRecords("Users", currentUsers?.uid, imagesObj);
+      }
+      toast.success("Twój profil został zaktualizowany");
+      navigate("/");
     } catch (error) {
       console.log(error);
+      toast.error("coś poszło nie tak");
+    } finally {
+      setIsLoading(false);
     }
-
-    setIsLoading(false);
   };
-  console.log(userCurrent?.photoURL);
+
   return (
     <Dialog open={true}>
       <DialogTitle>
@@ -102,7 +103,7 @@ const Profile = () => {
           <Close />
         </IconButton>
       </DialogTitle>
-      <button onClick={handleSubmit}>Dodaj</button>
+      {/* <button onClick={handleSubmit}>Dodaj</button> */}
       {/* <form onSubmit={handleSubmit}> */}
       <DialogContent dividers>
         <DialogContentText>
@@ -134,7 +135,10 @@ const Profile = () => {
         </label>
       </DialogContent>
       <DialogActions>
-        <SubmitButton>Submit</SubmitButton>
+        {/* <SubmitButton>Submit</SubmitButton> */}
+        <Button variant="contained" endIcon={<Send />} onClick={handleSubmit}>
+          Dodaj
+        </Button>
       </DialogActions>
       {/* </form> */}
     </Dialog>
@@ -142,60 +146,3 @@ const Profile = () => {
 };
 
 export default Profile;
-// const handleSubmit = async () => {
-//     setIsLoading(true);
-
-//     let userObj = { displayName: name };
-//     let imagesObj = { uName: name };
-
-//     try {
-//       if (file) {
-//         const imageName = uuidv4() + "." + file?.name?.split(".")?.pop();
-
-//         const storageRef = ref(storage, `profile/`);
-//         const bytes = new Uint8Array([
-//           0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x2c, 0x20, 0x77, 0x6f, 0x72, 0x6c,
-//           0x64, 0x21,
-//         ]);
-
-//         await uploadBytes(storageRef, file).then((snapshot) => {
-//           console.log("Uploaded a blob or file!");
-//         });
-
-// const url = await getDownloadURL(storageRef);
-// resolve(url);
-// reject(error);
-// console.log(url);
-// if (userCurrent?.photoURL) {
-//   const prevImage = userCurrent?.photoURL
-//     ?.split(`${userCurrent?.uid}%2F`)[1]
-//     .split("?")[0];
-//   if (prevImage) {
-//     try {
-//       await deleteObject(storageRef);
-//       //    deleteFile(`profile/${userCurrent?.uid}/${prevImage}`);
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   }
-// }
-//       }
-//     } catch (err) {
-//       console.log(err);
-//     }
-//   };
-// if(photoURL){
-// userObj = { ...userObj, photoURL: url };
-// }
-// imagesObj = { ...imagesObj, uPhoto: url };
-//   }
-// if (userCurrent) {
-//   await updateProfile(userCurrent, userObj);
-// }
-//   await updateUserRecords("gallery", currentUser?.uid, imagesObj);
-// } catch (error) {
-//   console.log(error);
-// } finally {
-//   setIsLoading(false);
-// }
-//   };

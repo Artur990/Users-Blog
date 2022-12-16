@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React, { HtmlHTMLAttributes, ReactElement } from "react";
 import { any, z } from "zod";
 import {
   IconButton,
@@ -11,61 +11,50 @@ import { useState } from "react";
 import { Path, UseFormRegister } from "react-hook-form";
 import { FieldValues } from "react-hook-form";
 import { RegisterSchemaType } from "../../../hooks/RegisterSchema";
-interface InputProps {}
-interface Label {
-  email: string;
-  password: string;
-}
-interface Label2 {
-  email: string;
-  password: string;
-  name?: string | undefined;
-  confirmPassword?: string | null;
-  photoNumber?: string | null;
-}
-// interface Labels extends Label2, Label {}
+import { LoginSchemaType } from "../../../hooks/LoginSchema";
 
-interface InputProps {
-  // extends React.PropsWithRef<JSX.IntrinsicElements["input"]>
-  // extends React.PropsWithRef<HTMLInputElement>
-  // label: string | ReactElement;
-  error?: boolean;
-  helperText?: any;
-  step?: 300;
-  label: any;
-  register: any;
-  required?: boolean;
-  defaultValue?: string;
-  id?: string;
-  placeholder?: string;
-  type?: string;
-  margin: TextFieldProps["margin"];
-  variant: TextFieldProps["variant"];
-  name?: string;
-}
+type InputProps = {
+  error: any;
+  helperText: any;
+  // margin: TextFieldProps["margin"];
+  // variant: TextFieldProps["variant"];
+} & TextFieldProps;
 
 // const Input = ({ register, label, type, ...props }: InputProps)
 
-const Input = ({ type, ...props }: InputProps) => {
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-
-  const handleClick: React.MouseEventHandler<HTMLButtonElement> = () => {
-    setShowPassword(!showPassword);
-  };
-  // if (typeof register === UseFormRegister) {
-  //
-  // if('confirmPassword' in register)
-
-  return (
-    <input
-      type={showPassword ? "text" : type}
-      // placeholder={placeholder}
-      autoFocus
-      // fullWidth
-      {...props}
-      // {...register(label, { required: true })}
-    />
-  );
-};
+const Input = React.forwardRef<HTMLInputElement, TextFieldProps>(
+  ({ label, type, ...props }, ref) => {
+    const [showPassword, setShowPassword] = useState<boolean>(false);
+    const handleClick: React.MouseEventHandler<HTMLButtonElement> = () => {
+      setShowPassword(!showPassword);
+    };
+    console.log("hej");
+    return (
+      <TextField
+        type={showPassword ? "text" : type}
+        margin="normal"
+        variant="standard"
+        autoFocus
+        fullWidth
+        ref={ref}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              {label === "password" && (
+                <IconButton
+                  aria-label="Toggle Password visibility"
+                  onClick={handleClick}
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              )}
+            </InputAdornment>
+          ),
+        }}
+        {...props}
+      />
+    );
+  }
+);
 
 export default Input;

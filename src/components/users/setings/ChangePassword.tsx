@@ -11,7 +11,8 @@ import { useAuth } from "../../../context/AuthContext";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useNavigate } from "react-router-dom";
+import SubmitButton from "../input/SubmitButton";
+import { useHandlerClose } from "../../../hooks/useHandlerClose";
 export const ChangePasswordSchema = z
   .object({
     password: z.string().min(5, { message: "hasło jest zbyt którkie" }).trim(),
@@ -28,8 +29,8 @@ export const ChangePasswordSchema = z
 type ChangePasswordSchemaType = z.infer<typeof ChangePasswordSchema>;
 
 const ChangePassword = () => {
+  const { handlerClose } = useHandlerClose();
   const { upDatePassword, setisReAuth } = useAuth();
-  const navigate = useNavigate();
   const {
     handleSubmit,
     register,
@@ -50,15 +51,11 @@ const ChangePassword = () => {
       setisReAuth(false);
     }
   };
-  const handlerClose = async () => {
-    navigate("/");
-    setisReAuth(false);
-  };
   return (
     <>
       <Dialog open={true}>
         <DialogTitle>
-          Update Password
+          Zmiana hasła
           <IconButton
             aria-label="Close"
             onClick={handlerClose}
@@ -74,9 +71,7 @@ const ChangePassword = () => {
         </DialogTitle>
         <form onSubmit={handleSubmit(submit)}>
           <DialogContent dividers>
-            <DialogContentText>
-              Please Enter your new Password:
-            </DialogContentText>
+            <DialogContentText>Wpisz swoje nowe hasło:</DialogContentText>
             <TextField
               id="password"
               label="password"
@@ -103,7 +98,7 @@ const ChangePassword = () => {
             />
           </DialogContent>
           <DialogActions>
-            <button>Wyslij</button>
+            <SubmitButton>Wyslij</SubmitButton>
           </DialogActions>
         </form>
       </Dialog>

@@ -13,12 +13,11 @@ import {
 import { Close, Google } from "@mui/icons-material";
 
 import { useAuth } from "../../context/AuthContext";
-import EmailField from "./input/EmailField";
-import PasswordField from "./input/PasswordField";
+
 import SubmitButton from "./input/SubmitButton";
-import PhotoNumberField from "./input/PhotoNumberField";
+
 import { useRegisterUser } from "../../hooks/useRegisterUser";
-import NameField from "./input/NameField";
+
 import Input from "./input/Input";
 
 const Register: React.FC = () => {
@@ -62,42 +61,35 @@ const Register: React.FC = () => {
               Pleace enter your email and password
             </DialogContentText>
             <Input
-              margin="normal"
-              variant="standard"
               id="name"
               label="name"
-              register={register}
-              required={true}
+              {...register("name", { required: true })}
               placeholder="Enter name"
-              defaultValue=""
               error={!!errors.name?.message}
               helperText={errors.name && errors.name.message}
             />
-            <EmailField
+            <Input
               label="email"
-              register={register}
-              required={true}
+              id="email"
+              {...register("email", { required: true })}
               placeholder="Enter email"
-              defaultValue=""
               error={!!errors.email?.message}
               helperText={errors.email && errors.email.message}
             />
-            <PasswordField
+            <Input
               id="password"
               label="password"
-              register={register}
-              required={true}
+              {...register("password", { required: true })}
               type="password"
               placeholder="Enter password"
               defaultValue=""
               error={!!errors.password?.message}
               helperText={errors.password && errors.password.message}
             />
-            <PasswordField
+            <Input
               id="confirmPassword"
               label="confirmPassword"
-              register={register}
-              required={true}
+              {...register("confirmPassword", { required: true })}
               type="password"
               placeholder="Enter confirmPassword"
               defaultValue=""
@@ -106,16 +98,15 @@ const Register: React.FC = () => {
                 errors.confirmPassword && errors.confirmPassword.message
               }
             />
-            <PhotoNumberField
-              id="photoNumber"
-              label="photoNumber"
-              register={register}
-              required={true}
+            <Input
+              id="phoneNumber"
+              label="phoneNumber"
+              {...register("phoneNumber", { required: true })}
               type="text"
               placeholder="Enter Photo Number"
               defaultValue=""
-              error={!!errors.photoNumber?.message}
-              helperText={errors.photoNumber && errors.photoNumber.message}
+              error={!!errors.phoneNumber?.message}
+              helperText={errors.phoneNumber && errors.phoneNumber.message}
             />
           </DialogContent>
 
