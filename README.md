@@ -31,6 +31,19 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
 ### `npm run eject`
 
+-Funkcjionalności: 
+	-authotyuzjacja urzytkownika (logowanie i rejestrowanie - tworzenie bazy danych 	urzytkowników z jednym admienem możliwości edytowania danych)
+	-edytacja urzytkowanika -ustawienie awataru, iemienia,  zmaina hasła, meila oraz          	usunięcie konta.
+	-dodanie postów oraz możliwość wyświetlenia tylko swoich postów. Posty	można je edytować, dodać komentarz oraz je usunąć.
+-Biblioteki: 
+	-React hook From
+	-Zood
+	-react router
+-Ul: 
+	-Material moi
+Database: 
+	-FireBase
+
 **Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
 If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
