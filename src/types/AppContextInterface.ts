@@ -14,8 +14,6 @@ export interface AppContextInterface {
   upDateEmail: (email: string) => void;
   reAuth: (password: string) => void;
   deleteAccount: () => void;
-
-  upDateProfil: (props: any) => void;
   isLoading: boolean;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   setisReAuth: React.Dispatch<React.SetStateAction<boolean>>;

@@ -183,14 +183,7 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
       setIsLoading(false);
     }
   };
-  const upDateProfil = async (props: any) => {
-    // try {
-    //   if (currentUsers) {
-    //     await updateProfile(currentUsers, props);
-    //   }
-    // } catch (error) {}
-    // updateUser();
-  };
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       if (firebaseUser) {
@@ -211,7 +204,6 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
     upDateEmail,
     upDatePassword,
     deleteAccount,
-    upDateProfil,
     isLoading,
     setIsLoading,
     reAuth,

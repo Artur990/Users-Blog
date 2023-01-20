@@ -15,6 +15,7 @@ import { useAuth } from "../../context/AuthContext";
 import toast from "react-hot-toast";
 import { PostType } from "../../types/postType";
 import moment from "moment";
+import { useForm, SubmitHandler } from "react-hook-form";
 
 export const blogLoader = async ({ params }: any) => {
   const docRef = doc(db, "react-blog2", params.id);
@@ -27,16 +28,22 @@ type Comment = {
   comment: string;
   createdAT: string;
 };
+type Inputs = {
+  comment: string;
+};
 const Post = () => {
   const { currentUsers, setIsLoading } = useAuth();
   const [messaeg, setMessage] = useState<string>();
   const [allmessaege, setAllMessage] = useState<Comment[]>();
   const id = useLoaderData() as PostType;
 
-  const handlerInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    setMessage(e.target.value);
-  };
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<Inputs>();
+
   const postRef = doc(db, "react-blog2", id.id);
   const submitPost = async () => {
     setIsLoading(true);
@@ -65,6 +72,10 @@ const Post = () => {
       setIsLoading(false);
     }
   };
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    setMessage(data.comment);
+    submitPost();
+  };
   const getComments = async () => {
     const docRef = doc(db, "react-blog2", id.id);
     const unsubscribe = onSnapshot(docRef, (snapshot) => {
@@ -83,58 +94,57 @@ const Post = () => {
         <Typography variant="h6" component="h3">
           Dodaj komentarz
         </Typography>
-
-        <Paper elevation={5}>
-          <Box
-            sx={{ display: "flex", alignItems: "center" }}
-            marginLeft={1}
-            marginBottom={2}
-            marginTop={2}
-            paddingTop={2}
-          >
-            <IconButton size="small" sx={{ ml: 2 }}>
-              <Avatar sx={{ width: 32, height: 32 }}>
-                {id?.userName?.charAt(0)?.toUpperCase() ||
-                  id?.author[0].email?.charAt(0)?.toUpperCase()}
-              </Avatar>
-            </IconButton>
-            <Typography variant="h6" component="h3">
-              {id?.userName?.toUpperCase() || id?.author[0].email}
-            </Typography>
-          </Box>
-          <Box marginLeft={4} marginBottom={3}>
-            <Typography variant="subtitle1" component="h2">
-              {id.postText}
-            </Typography>
-          </Box>
-          <Box
-            marginLeft={4}
-            marginBottom={2}
-            paddingBottom={2}
-            sx={{ display: "flex", alignItems: "center" }}
-          >
-            <TextField
-              type="text"
-              id="Comment"
-              label="Comment"
-              variant="outlined"
-              fullWidth
-              onChange={handlerInput}
-              error={messaeg?.length === 0}
-              helperText={
-                messaeg?.length === 0 && "widomość nie może być pusta"
-              }
-            />
-            <Button
-              type="submit"
-              variant="outlined"
-              onClick={submitPost}
-              sx={{ margin: 2 }}
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Paper elevation={5}>
+            <Box
+              sx={{ display: "flex", alignItems: "center" }}
+              marginLeft={1}
+              marginBottom={2}
+              marginTop={2}
+              paddingTop={2}
             >
-              wyślij
-            </Button>
-          </Box>
-        </Paper>
+              <IconButton size="small" sx={{ ml: 2 }}>
+                <Avatar sx={{ width: 32, height: 32 }}>
+                  {id?.userName?.charAt(0)?.toUpperCase() ||
+                    id?.author[0].email?.charAt(0)?.toUpperCase()}
+                </Avatar>
+              </IconButton>
+              <Typography variant="h6" component="h3">
+                {id?.userName?.toUpperCase() || id?.author[0].email}
+              </Typography>
+            </Box>
+            <Box marginLeft={4} marginBottom={3}>
+              <Typography variant="subtitle1" component="h2">
+                {id.postText}
+              </Typography>
+            </Box>
+            <Box
+              marginLeft={4}
+              marginBottom={2}
+              paddingBottom={2}
+              sx={{ display: "flex", alignItems: "center" }}
+            >
+              <TextField
+                type="text"
+                id="Comment"
+                label="Comment"
+                variant="outlined"
+                fullWidth
+                {...register("comment")}
+                error={!!errors.comment?.message}
+                helperText={errors?.comment && errors.comment?.message}
+              />
+              <Button
+                type="submit"
+                variant="outlined"
+                // onClick={submitPost}
+                sx={{ margin: 2 }}
+              >
+                wyślij
+              </Button>
+            </Box>
+          </Paper>
+        </form>
       </Container>
       {allmessaege?.map((e) => {
         return (
