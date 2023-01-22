@@ -30,17 +30,14 @@ Your app is ready to be deployed!
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
 ### `npm run eject`
-
+- Technologie:
+	-React, TypeScript, React Router, React hook From, Zood itp
 -Funkcjionalności: 
-	-authotyuzjacja urzytkownika (logowanie i rejestrowanie - tworzenie bazy danych 	urzytkowników z jednym admienem możliwości edytowania danych)
-	-edytacja urzytkowanika -ustawienie awataru, iemienia,  zmaina hasła, meila oraz          	usunięcie konta.
-	-dodanie postów oraz możliwość wyświetlenia tylko swoich postów. Posty	można je edytować, dodać komentarz oraz je usunąć.
--Biblioteki: 
-	-React hook From
-	-Zood
-	-react router
--Ul: 
-	-Material moi
+	-Autoryzacja użytkownika (logowanie i rejestrowanie - tworzenie bazy danych urzytkowników z jednym admienem, który   	       ma możliwości edytowania danych)
+	-użytkowanik ma możliwość edytowania własnych danych  -ustawienie awataru, imienia, zmaina hasła, meila oraz          	        usunięcie konta.
+	-dodanie postów oraz możliwość wyświetlenia tylko swoich postów. Posty	można edytować, dodawać komentarze oraz je     		usuwać.
+-UI: 
+	-Material UI
 Database: 
 	-FireBase
 
