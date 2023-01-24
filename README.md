@@ -6,9 +6,9 @@
 	-Autoryzacja użytkownika (logowanie i rejestrowanie - tworzenie bazy danych urzytkowników z jednym admienem, który   	       ma możliwości edytowania danych)
 	-użytkowanik ma możliwość edytowania własnych danych  -ustawienie awataru, imienia, zmaina hasła, meila oraz          	        usunięcie konta.
 	-dodanie postów oraz możliwość wyświetlenia tylko swoich postów. Posty	można edytować, dodawać komentarze oraz je     		usuwać.
--UI: 
+##UI: 
 	-Material UI
-Database: 
+## Database: 
 	-FireBase
 
 
