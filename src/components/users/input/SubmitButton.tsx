@@ -4,6 +4,7 @@ import { Send } from "@mui/icons-material";
 
 type Props = {
   children: React.ReactNode;
+  id: string;
 };
 const SubmitButton = ({ children, ...props }: Props) => {
   return (

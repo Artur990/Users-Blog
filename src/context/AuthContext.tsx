@@ -12,16 +12,16 @@ import {
   updateEmail,
   EmailAuthProvider,
   reauthenticateWithCredential,
-  updateProfile,
   AuthError,
 } from "firebase/auth";
 import { addDoc, collection, deleteDoc, doc } from "firebase/firestore";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { Navigate, Outlet, useNavigate } from "react-router-dom";
 
 import { AppContextInterface } from "../types/AppContextInterface";
 import { auth, db } from "../firebase/config";
 import moment from "moment";
+// import { PrivatedRoute } from "../utils/PrivateRoute";
 
 export const AuthContext = createContext<AppContextInterface>(
   {} as AppContextInterface
@@ -36,9 +36,11 @@ interface Props {
 export const AuthContextProvider: React.FC<Props> = ({ children }) => {
   const navigate = useNavigate();
   const [currentUsers, setcurrentUsers] = useState<User | null>(null);
+  const [currentUsersRoot, setcurrentUsersRoot] = useState<boolean>(false);
   const [isReAuth, setisReAuth] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const collectionRef = collection(db, "Users");
+
   const signUp = async (
     email: string,
     name: string,
@@ -46,13 +48,14 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
     phoneNumber: string
   ) => {
     setIsLoading(true);
+    setcurrentUsersRoot(true);
     try {
       const userCredentials = await createUserWithEmailAndPassword(
         auth,
         email,
         password
       );
-      console.log(name);
+
       setcurrentUsers(userCredentials.user);
       addDoc(collectionRef, {
         id: moment().format(),
@@ -63,15 +66,15 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
         uid: userCredentials.user.uid,
         photoURL: "",
         isAdmin: false,
-        // collectionRef,
       });
+      // currentUsersRoot
+      setcurrentUsersRoot(true);
       navigate("/");
-      toast.success("Zostałeś zarejstrowany");
+      toast.success("You have been registered");
       return userCredentials;
     } catch (err) {
       console.error(err as AuthError);
-
-      toast.error("coś poszło nie tak");
+      toast.error("Something went wrong");
       return null;
     } finally {
       setIsLoading(false);
@@ -79,6 +82,7 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
   };
   const login = async (email: string, password: string) => {
     setIsLoading(true);
+    setcurrentUsersRoot(true);
     try {
       const userCredentials = await signInWithEmailAndPassword(
         auth,
@@ -86,10 +90,10 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
         password
       );
       setcurrentUsers(userCredentials.user);
-      toast.success("Zostałeś zalogowany");
+      setcurrentUsersRoot(true);
+      toast.success("You have been logged in");
     } catch (err) {
-      console.error(err, "dsa");
-      toast.error("Nie prawidłowy login lub hasło");
+      toast.error("Something went wrong");
     } finally {
       setIsLoading(false);
     }
@@ -99,26 +103,31 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
     try {
       await signOut(auth);
       setcurrentUsers(null);
-      toast.success("Zostałeś wylogowany");
+      toast.success("You have been logged out");
+      setcurrentUsersRoot(false);
     } catch (error) {
+      toast.error("Something went wrong");
     } finally {
       setIsLoading(false);
     }
   };
   const handleGoogleLogin = () => {
-    const provaider = new GoogleAuthProvider();
-    navigate("/");
-
-    addDoc(collectionRef, {
-      name: auth.name,
-      email: auth?.currentUser?.email,
-      password: "",
-      phoneNumber: auth?.currentUser?.phoneNumber,
-      uid: auth?.currentUser?.uid,
-      photoURL: "",
-      isAdmin: false,
-    });
-    return signInWithPopup(auth, provaider);
+    try {
+      const provaider = new GoogleAuthProvider();
+      signInWithPopup(auth, provaider).then(() => {
+        addDoc(collectionRef, {
+          name: auth.name,
+          email: auth?.currentUser?.email,
+          password: "",
+          phoneNumber: auth?.currentUser?.phoneNumber,
+          uid: auth?.currentUser?.uid,
+          photoURL: "",
+          isAdmin: false,
+        });
+        setcurrentUsersRoot(true);
+        return navigate("/");
+      });
+    } catch (error) {}
   };
   const reAuth = async (password: string) => {
     setIsLoading(true);
@@ -128,14 +137,13 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
     );
     try {
       setisReAuth(true);
-      console.log(currentUsers);
       if (currentUsers) {
         await reauthenticateWithCredential(currentUsers, credential);
       }
       navigate("/accountSettings");
     } catch (error) {
       setisReAuth(false);
-      toast.error("coś poszło nie tak");
+      toast.error("Something went wrong");
     } finally {
       setIsLoading(false);
     }
@@ -146,10 +154,10 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
       if (currentUsers) {
         updatePassword(currentUsers, password);
       }
-      toast.success("Twoj hasło zostało zmienione");
+      toast.success("Your password has been changed");
       navigate("/");
     } catch (error) {
-      toast.error("coś poszło nie tak");
+      toast.error("Something went wrong");
     } finally {
       setIsLoading(false);
     }
@@ -161,9 +169,9 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
       if (currentUsers) {
         await updateEmail(currentUsers, email);
       }
-      toast.success("Twoj email zostało zmienione");
+      toast.success("Your email has been changed");
     } catch (error) {
-      toast.error("coś poszło nie tak");
+      toast.error("Something went wrong");
     } finally {
       setIsLoading(false);
     }
@@ -174,11 +182,10 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
       if (currentUsers) {
         await deleteUser(currentUsers);
         await deleteDoc(doc(db, "Users", currentUsers.uid));
-        // await deleteDoc(doc(db, "Users", ));
       }
-      toast.success("Twoj konto zostało usunięte");
+      toast.success("Your account has been deleted");
     } catch (error) {
-      toast.error("coś poszło nie tak");
+      toast.error("Something went wrong");
     } finally {
       setIsLoading(false);
     }
@@ -189,7 +196,6 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
       if (firebaseUser) {
         setcurrentUsers(firebaseUser);
       }
-      console.log(auth);
       console.log("user status changed");
     });
     return unsubscribe;
@@ -209,6 +215,7 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
     reAuth,
     isReAuth,
     setisReAuth,
+    currentUsersRoot,
   };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

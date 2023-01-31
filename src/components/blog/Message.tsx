@@ -55,8 +55,7 @@ const Message = (props: PostType) => {
               component="h1"
               sx={{ display: "flex", alignItems: "center" }}
             >
-              {!props?.comments?.length ? 0 : props?.comments?.length}{" "}
-              Komentarze
+              {!props?.comments?.length ? 0 : props?.comments?.length} Comments
             </Typography>
 
             <Button
@@ -64,7 +63,7 @@ const Message = (props: PostType) => {
               component="a"
               sx={{ margin: 1, textDecoration: "none" }}
             >
-              Dodaj
+              Add
             </Button>
           </Box>
           <Typography variant="subtitle1" component="a" marginRight={2}>

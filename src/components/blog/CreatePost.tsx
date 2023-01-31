@@ -1,52 +1,13 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Container } from "@mui/system";
-import moment from "moment";
 import { Button, Paper, TextareaAutosize, Typography } from "@mui/material";
-import { addDoc, collection } from "firebase/firestore";
-import { db } from "../../firebase/config";
-import { useAuth } from "../../context/AuthContext";
-import toast from "react-hot-toast";
+import { useCreatePost } from "../../hooks/blog/useCreatePost";
 
 const CreatePost = () => {
-  const navigate = useNavigate();
-  const { currentUsers, setIsLoading } = useAuth();
-  const [post, setPost] = useState<string>();
-  console.log(post);
-
-  const submitPost = async () => {
-    setIsLoading(true);
-    try {
-      const postCollectionRef = collection(db, "react-blog2");
-      await addDoc(postCollectionRef, {
-        createdAT: moment().format(),
-        userName: currentUsers?.email,
-        user: currentUsers?.uid,
-        postText: post,
-        comments: [],
-        author: [
-          {
-            avatar: currentUsers?.photoURL,
-            email: currentUsers?.email,
-          },
-        ],
-      });
-      toast.success("Twój post został dodany");
-      navigate("/");
-    } catch (error) {
-      toast.error("Coś poszło nie tak");
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const { post, setPost, submitPost } = useCreatePost();
   return (
     <Container maxWidth="sm" sx={{ marginTop: 2 }}>
-      {/* <form onSubmit={submitPost}> */}
       <Paper
         elevation={3}
-        // variant="outlined"
-        // margin={3}
         sx={{
           display: "flex",
           alignItems: "center",
@@ -55,12 +16,13 @@ const CreatePost = () => {
         }}
       >
         <Typography variant="h6" component="h3">
-          Dodaj swój post
+          Create a post
         </Typography>
         <Typography variant="subtitle1" component="h1">
-          Opis
+          Post content
         </Typography>
         <TextareaAutosize
+          id="textarea"
           aria-label="empty textarea"
           placeholder="Dodaj Post"
           style={{
@@ -77,11 +39,15 @@ const CreatePost = () => {
         <Typography variant="subtitle1" component="h1">
           {!post?.length ? 0 : post?.length}/200
         </Typography>
-        <Button type="submit" onClick={submitPost} variant="contained">
+        <Button
+          type="submit"
+          id="button"
+          onClick={submitPost}
+          variant="contained"
+        >
           create
         </Button>
       </Paper>
-      {/* </form> */}
     </Container>
   );
 };

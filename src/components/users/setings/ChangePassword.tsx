@@ -7,50 +7,15 @@ import {
 
 import { Close } from "@mui/icons-material";
 import { Dialog, DialogTitle, IconButton } from "@mui/material";
-import { useAuth } from "../../../context/AuthContext";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import SubmitButton from "../input/SubmitButton";
 import { useHandlerClose } from "../../../hooks/useHandlerClose";
-export const ChangePasswordSchema = z
-  .object({
-    password: z.string().min(5, { message: "hasło jest zbyt którkie" }).trim(),
-    confirmPassword: z
-      .string()
-      .min(5, { message: "hasło jest zbyt którkie" })
-      .trim(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Email powinnien być taki sam",
-    path: ["confirmPassword"],
-  });
+import Input from "../input/Input";
 
-type ChangePasswordSchemaType = z.infer<typeof ChangePasswordSchema>;
+import { useChangePassword } from "../../../hooks/seting/useChangePassword";
 
 const ChangePassword = () => {
   const { handlerClose } = useHandlerClose();
-  const { upDatePassword, setisReAuth } = useAuth();
-  const {
-    handleSubmit,
-    register,
-    formState: { errors },
-  } = useForm<ChangePasswordSchemaType>({
-    resolver: zodResolver(ChangePasswordSchema),
-  });
-
-  const submit = async ({
-    password,
-    confirmPassword,
-  }: ChangePasswordSchemaType) => {
-    try {
-      upDatePassword(password);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setisReAuth(false);
-    }
-  };
+  const { errors, handleSubmit, register, submit } = useChangePassword();
   return (
     <>
       <Dialog open={true}>
@@ -72,22 +37,20 @@ const ChangePassword = () => {
         <form onSubmit={handleSubmit(submit)}>
           <DialogContent dividers>
             <DialogContentText>Wpisz swoje nowe hasło:</DialogContentText>
-            <TextField
+            <Input
               id="password"
               label="password"
               {...register("password", { required: true })}
-              // required={true}
               type="password"
               placeholder="Enter password"
               defaultValue=""
               error={!!errors.password?.message}
               helperText={errors.password && errors.password.message}
             />
-            <TextField
+            <Input
               id="confirmPassword"
               label="confirmPassword"
               {...register("confirmPassword", { required: true })}
-              // required={true}
               type="password"
               placeholder="Enter confirmPassword"
               defaultValue=""
@@ -98,7 +61,7 @@ const ChangePassword = () => {
             />
           </DialogContent>
           <DialogActions>
-            <SubmitButton>Wyslij</SubmitButton>
+            <SubmitButton id="button">Wyslij</SubmitButton>
           </DialogActions>
         </form>
       </Dialog>

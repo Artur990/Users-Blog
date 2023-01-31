@@ -1,15 +1,8 @@
-import {
-  Button,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  Typography,
-} from "@mui/material";
+import { DialogActions, DialogContent } from "@mui/material";
 
 import { Close } from "@mui/icons-material";
 import { Dialog, DialogTitle, IconButton } from "@mui/material";
 import { useAuth } from "../../../context/AuthContext";
-// import { Link } from "react-router-dom";
 import { Link, useNavigate } from "react-router-dom";
 
 const AccountSettings = () => {
@@ -39,64 +32,21 @@ const AccountSettings = () => {
             }}
           >
             <Close />
-            {/* close */}
           </IconButton>
         </DialogTitle>
         <DialogContent dividers></DialogContent>
         <DialogActions sx={{ flexDirection: "column", gap: 2, my: 2 }}>
           {isPasswordProvider && (
             <Link style={{ textDecoration: "none" }} to="/changePassword">
-              <Typography
-                sx={{
-                  mr: 2,
-
-                  fontFamily: "monospace",
-                  fontWeight: 700,
-                  letterSpacing: ".3rem",
-                  color: "black",
-                  textDecoration: "none",
-                }}
-              >
-                Zmień hasło
-              </Typography>
+              Zmień hasło
             </Link>
           )}
           <Link style={{ textDecoration: "none" }} to="/changeEmail">
-            {/* <Typography
-              noWrap
-              sx={{
-                mr: 2,
-                display: { xs: "none", md: "flex" },
-                fontFamily: "monospace",
-                fontWeight: 700,
-                letterSpacing: ".3rem",
-                color: "black",
-                textDecoration: "none",
-              }}
-            >
-              Zmień adres email
-            </Typography> */}
             Zmień adres email
           </Link>
 
           <Link style={{ textDecoration: "none" }} to="/delateAccount">
-            <Typography
-              // variant="h6"
-              noWrap
-              // component="a"
-              // href="/delateAccount"
-              sx={{
-                mr: 2,
-
-                fontFamily: "monospace",
-                fontWeight: 700,
-                letterSpacing: ".3rem",
-                color: "black",
-                textDecoration: "none",
-              }}
-            >
-              Usuń konto
-            </Typography>
+            Usuń konto
           </Link>
         </DialogActions>
       </Dialog>

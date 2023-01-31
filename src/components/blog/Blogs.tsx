@@ -1,7 +1,7 @@
 import React from "react";
 import { Container } from "@mui/system";
 
-import { useBlog } from "../../hooks/useBlog";
+import { useBlog } from "../../hooks/blog/useBlog";
 import Message from "./Message";
 
 const Blogs = () => {

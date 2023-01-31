@@ -18,4 +18,5 @@ export interface AppContextInterface {
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   setisReAuth: React.Dispatch<React.SetStateAction<boolean>>;
   isReAuth: boolean;
+  currentUsersRoot: boolean;
 }

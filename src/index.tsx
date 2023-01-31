@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
-import { BrowserRouter, Route, RouterProvider } from "react-router-dom";
+import { Route, RouterProvider } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   createBrowserRouter,
@@ -16,27 +16,26 @@ import ChangePassword from "./components/users/setings/ChangePassword";
 import ReAuth from "./components/users/setings/ReAuth";
 import ChangeEmail from "./components/users/setings/ChangeEmail";
 import DeleteAccount from "./components/users/setings/DeleteAccount";
-import { PrivatedRouteReAuth, PrivatedRoute } from "./utils/PrivateRoute";
+
+import { PrivatedRouteReAuth } from "./utils/PrivateRoute";
+import { PrivatedRoute } from "./utils/PrivateRoute";
 
 import App from "./App";
-// import Pokemon, { pokemonLoader } from "./Pokemon";
 import CreatePost from "./components/blog/CreatePost";
 import MyPost from "./components/blog/MyPost";
 import Blogs from "./components/blog/Blogs";
 import Error from "./Error";
 import Post, { blogLoader } from "./components/blog/Post";
 import EditPost, { postLoader } from "./components/blog/EditPost";
-import EditUsers from "./components/EditUsers";
+import EditUsers from "./components/EditUserst";
 import Profile from "./components/Profile";
 
 const JSXRouter = createBrowserRouter(
   createRoutesFromElements(
-    <Route
-      element={<App />}
-      errorElement={<Error />}
-      // loader={rootLoader}
-      path="/"
-    >
+    <Route element={<App />} errorElement={<Error />} path="/">
+      <Route path="/register" element={<Register />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/" element={<Blogs />} />
       <Route element={<PrivatedRoute />}>
         <Route
           element={<Post />}
@@ -52,19 +51,16 @@ const JSXRouter = createBrowserRouter(
         />
         <Route path="/profile" element={<Profile />} />
         <Route path="/myPost" element={<MyPost />} />
-        <Route path="/dodajPost" element={<CreatePost />} />
+        <Route path="/createPost" element={<CreatePost />} />
         <Route path="/reAuth" element={<ReAuth />} />
         <Route path="/editUsers" element={<EditUsers />} />
-      </Route>
-      <Route path="/register" element={<Register />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/" element={<Blogs />} />
-      {/* <Route path="/editUsers2" element={<EditUsers2 />} /> */}
-      <Route element={<PrivatedRouteReAuth />}>
-        <Route path="/accountSettings" element={<AccountSettings />} />
-        <Route path="/changeEmail" element={<ChangeEmail />} />
-        <Route path="/delateAccount" element={<DeleteAccount />} />
-        <Route path="/changePassword" element={<ChangePassword />} />
+
+        <Route element={<PrivatedRouteReAuth />}>
+          <Route path="/accountSettings" element={<AccountSettings />} />
+          <Route path="/changeEmail" element={<ChangeEmail />} />
+          <Route path="/delateAccount" element={<DeleteAccount />} />
+          <Route path="/changePassword" element={<ChangePassword />} />
+        </Route>
       </Route>
     </Route>
   )

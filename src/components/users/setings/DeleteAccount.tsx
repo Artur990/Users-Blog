@@ -8,23 +8,13 @@ import {
   DialogTitle,
   IconButton,
 } from "@mui/material";
-import toast from "react-hot-toast";
-// import { useNavigate } from "react-router-dom";
 
 import { useHandlerClose } from "../../../hooks/useHandlerClose";
-import { useAuth } from "../../../context/AuthContext";
+import { useDeleteAccount } from "../../../hooks/seting/useDeleteAccount";
 
 const DeleteAccount = () => {
-  const { deleteAccount } = useAuth();
   const { handlerClose } = useHandlerClose();
-  const handleSubmit = async () => {
-    try {
-      deleteAccount();
-      toast.success("Twoje konot zostało usunięte");
-    } catch (error) {
-      toast.success("Coś poszło nie tak");
-    }
-  };
+  const { handleSubmit } = useDeleteAccount();
   return (
     <Dialog open={true}>
       <DialogTitle>

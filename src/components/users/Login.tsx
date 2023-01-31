@@ -27,10 +27,10 @@ const Login: React.FC = () => {
     },
   } = useLoginUser({
     onSuccess: () => {
-      // toast.success("zarejestrowano");
+      toast.success("You have been logged in");
     },
     onError: () => {
-      toast.error("coś poszło nie tak");
+      toast.error("Somethink wnet wrong");
     },
   });
 
@@ -80,7 +80,7 @@ const Login: React.FC = () => {
 
           <DialogActions sx={{ justifyContent: "space-between", px: "19px" }}>
             <Button size="small">Forgot Password?</Button>
-            <SubmitButton>Submit</SubmitButton>
+            <SubmitButton id="button">Submit</SubmitButton>
           </DialogActions>
         </form>
         <DialogActions sx={{ justifyContent: "left", p: "5px 24px" }}>

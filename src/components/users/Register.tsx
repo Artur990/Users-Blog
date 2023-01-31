@@ -31,10 +31,10 @@ const Register: React.FC = () => {
     },
   } = useRegisterUser({
     onSuccess: () => {
-      // toast.success("zarejestrowano");
+      toast.success("You have been registered");
     },
     onError: () => {
-      toast.error("coś poszło nie tak wrong");
+      toast.error("Somethink went wrong");
     },
   });
   return (
@@ -111,7 +111,7 @@ const Register: React.FC = () => {
           </DialogContent>
 
           <DialogActions sx={{ justifiContent: "space-between", px: "19px" }}>
-            <SubmitButton>Submit</SubmitButton>
+            <SubmitButton id="button">Submit</SubmitButton>
           </DialogActions>
         </form>
         <DialogActions sx={{ justifyContent: "left", p: "5px 24px" }}>

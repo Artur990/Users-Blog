@@ -6,44 +6,13 @@ import {
 } from "@mui/material";
 import { Close } from "@mui/icons-material";
 import { Dialog, DialogTitle, IconButton } from "@mui/material";
-import { useAuth } from "../../../context/AuthContext";
-import { useNavigate } from "react-router-dom";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import SubmitButton from "../input/SubmitButton";
-import { toast } from "react-hot-toast";
-
-export const ChangeEmailSchema = z.object({
-  email: z.string().email("wpisz poprawny adres").min(5).max(15),
-});
-
-type ChangeEmailSchemaType = z.infer<typeof ChangeEmailSchema>;
+import { useChangeEmail } from "../../../hooks/seting/useChangeEmail";
+import { useHandlerClose } from "../../../hooks/useHandlerClose";
 
 const ChangeEmail = () => {
-  const { upDateEmail, setisReAuth } = useAuth();
-  const navigate = useNavigate();
-  const {
-    handleSubmit,
-    register,
-    formState: { errors },
-  } = useForm<ChangeEmailSchemaType>({
-    resolver: zodResolver(ChangeEmailSchema),
-  });
-
-  const submit = async ({ email }: ChangeEmailSchemaType) => {
-    try {
-      upDateEmail(email);
-      navigate("/");
-      toast.success("Twoj email zostało zmienione");
-    } catch (error) {
-      toast.error("coś poszło nie tak");
-    }
-  };
-  const handlerClose = async () => {
-    navigate("/");
-    setisReAuth(false);
-  };
+  const { handlerClose } = useHandlerClose();
+  const { errors, handleSubmit, register, submit } = useChangeEmail();
   return (
     <Dialog open={true}>
       <DialogTitle>
@@ -78,7 +47,7 @@ const ChangeEmail = () => {
           />
         </DialogContent>
         <DialogActions>
-          <SubmitButton>Wyślij</SubmitButton>
+          <SubmitButton id="button">Wyślij</SubmitButton>
         </DialogActions>
       </form>
     </Dialog>

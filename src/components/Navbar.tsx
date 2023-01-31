@@ -15,30 +15,17 @@ import AdbIcon from "@mui/icons-material/Adb";
 
 import { useAuth } from "../context/AuthContext";
 import { Link } from "@mui/material";
-import { Height } from "@mui/icons-material";
-
-const pages = ["Products", "Pricing", "Blog"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+import console from "console";
 
 const Navbar: React.FC = () => {
   const { currentUsers, logout } = useAuth();
-
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
-    null
-  );
+  // console.log(currentUsers?.email, "navbar");
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
 
-  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget);
-  };
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
   };
 
   const handleCloseUserMenu = () => {
@@ -53,7 +40,6 @@ const Navbar: React.FC = () => {
             display: "flec",
             justifyContent: "space-between",
           }}
-          //  disableGutters
         >
           <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
           <Typography
@@ -67,62 +53,11 @@ const Navbar: React.FC = () => {
               fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".3rem",
-              // color: "inherit",
               textDecoration: "none",
             }}
-            // onClick={hadleLogeout}
           >
-            CO słychać ?
+            whats up ?
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: "block", md: "none" },
-              }}
-            >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography
-                    sx={{
-                      mr: 2,
-                      display: { xs: "none", md: "flex" },
-                      fontFamily: "monospace",
-                      fontWeight: 700,
-                      letterSpacing: ".3rem",
-                      color: "black",
-                      textDecoration: "none",
-                    }}
-                    textAlign="center"
-                  >
-                    {page}
-                  </Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
           <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
           <Typography
             variant="h5"
@@ -136,39 +71,22 @@ const Navbar: React.FC = () => {
               fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".3rem",
-              // color: "inherit",
               textDecoration: "none",
             }}
           >
-            CO słychać ?
+            whats up ?
           </Typography>
-          {/* <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "black", display: "block" }}
-              >
-                {page}
-              </Button>
-            ))}
-          </Box> */}
 
           {currentUsers?.email ? (
             <Box sx={{ flexGrow: 0 }}>
-              <Button variant="outlined" href="/dodajPost" sx={{ margin: 2 }}>
+              <Button variant="outlined" href="/createPost" sx={{ margin: 2 }}>
                 Post
               </Button>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   <Avatar
                     src={currentUsers.photoURL ? currentUsers.photoURL : ""}
-                  >
-                    {/* { currentUsers?.name?.charAt(0)?.toUpperCase() ||  */}
-                    {/* {(!currentUsers.photoURL && */}
-                    {/* currentUsers?.email?.charAt(0)?.toUpperCase()) */}
-                    {/* currentUsers?.name?.charAt(0)?.toUpperCase()} */}
-                  </Avatar>
+                  ></Avatar>
                 </IconButton>
               </Tooltip>
               <Menu
@@ -187,80 +105,30 @@ const Navbar: React.FC = () => {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                {/* {settings.map((setting) => ( */}
-                <MenuItem>
-                  <Link
-                    // component="a"
-                    href="/profile"
-                    underline="none"
-                    textAlign="center"
-                  >
-                    Profil
-                  </Link>
-                </MenuItem>
-                {/* <Link href="/editUsers" underline="none"> */}
-                <MenuItem
-                  href="/editUsers"
-                  // underline="none"
-                >
-                  <Link
-                    // component="a"
-                    href="/editUsers"
-                    underline="none"
-                    textAlign="center"
-                  >
-                    Użytkownicy
-                  </Link>
-                </MenuItem>
-                {/* </Link> */}
-                <MenuItem>
-                  <Link
-                    // component="a"
-                    href="/myPost"
-                    underline="none"
-                    textAlign="center"
-                  >
-                    Moje posty
-                  </Link>
-                </MenuItem>
-                <MenuItem onClick={handleCloseUserMenu}>
-                  <Link
-                    // component="a"
-                    href="/reAuth"
-                    underline="none"
-                    textAlign="center"
-                  >
-                    Edutuj swoje dane
-                  </Link>
-                </MenuItem>
-                <MenuItem>
-                  <Button onClick={logout}>Wyloguj</Button>
-                </MenuItem>
+                <Link href="/profile" underline="none" textAlign="center">
+                  <MenuItem>Profile</MenuItem>
+                </Link>
+                <Link href="/editUsers" underline="none" textAlign="center">
+                  <MenuItem>Usersy</MenuItem>
+                </Link>
+                <Link href="/myPost" underline="none" textAlign="center">
+                  <MenuItem>My posts</MenuItem>
+                </Link>
+
+                <Link href="/reAuth" underline="none" textAlign="center">
+                  <MenuItem onClick={handleCloseUserMenu}>
+                    Edit your details
+                  </MenuItem>
+                </Link>
+                <Button onClick={logout}>
+                  <MenuItem>log out</MenuItem>
+                </Button>
               </Menu>{" "}
             </Box>
           ) : (
             <Box>
-              {/* <Link
-                sx={{
-                  mr: 2,
-                  width: 150,
-                  height: 30,
-                  background: "black",
-                  WflexGrow: 1,
-                  fontFamily: "monospace",
-                  fontWeight: 700,
-                  letterSpacing: ".3rem",
-                  color: "white",
-                  // textDecoration: "none",
-                }}
-                href="/login"
-                underline="none"
-                textAlign="center"
-              >
-                Dołącz teraz
-              </Link> */}
               <Button variant="outlined" href="/login" sx={{ margin: 2 }}>
-                Dołącz teraz
+                Join now!
               </Button>
             </Box>
           )}

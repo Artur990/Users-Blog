@@ -51,14 +51,13 @@ const ReAuth = () => {
             label="password"
             {...register("password", { required: true })}
             type="password"
-            placeholder=""
+            placeholder="Enter password"
             defaultValue=""
             error={!!errors.password?.message}
-            // helperText={errors.password && errors.password.message}
           />
         </DialogContent>
         <DialogActions>
-          <SubmitButton>Wyślij</SubmitButton>
+          <SubmitButton id="button">Wyślij</SubmitButton>
           <Button />
         </DialogActions>
       </form>

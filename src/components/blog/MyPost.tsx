@@ -1,69 +1,15 @@
-import React, { useEffect, useState } from "react";
 import { Box, Container } from "@mui/system";
 import { Avatar, IconButton, Paper, Typography } from "@mui/material";
 import { BorderColorSharp, DeleteForeverSharp } from "@mui/icons-material";
-import {
-  collection,
-  deleteDoc,
-  doc,
-  onSnapshot,
-  orderBy,
-  query,
-  where,
-} from "firebase/firestore";
-import toast from "react-hot-toast";
-import { db, auth } from "../../firebase/config";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { useAuth } from "../../context/AuthContext";
-import { useBlog } from "../../hooks/useBlog";
-import { PostType } from "../../types/postType";
+import { useMyPost } from "../../hooks/blog/useMyPost";
 
 const MyPost = () => {
-  const { setIsLoading } = useAuth();
-  const [user, loading] = useAuthState(auth);
-  const [posts, setPosts] = useState<PostType[]>();
-  const postCollectionRef = collection(db, "react-blog2");
-  console.log(posts);
-  // const { blog } = useBlog(true);
-  const getPosts = async () => {
-    if (loading) {
-      setIsLoading(true);
-    }
-    if (!user) {
-      return;
-    }
-
-    const q = query(postCollectionRef, where("user", "==", user?.uid));
-    const UnSubscribe = onSnapshot(q, (snapshot) => {
-      setPosts(
-        snapshot.docs.map((doc: any) => ({
-          ...doc.data(),
-          id: doc.id,
-        }))
-      );
-    });
-    setIsLoading(false);
-    return UnSubscribe;
-  };
-  const deletePost = async (id: string) => {
-    setIsLoading(true);
-    try {
-      await deleteDoc(doc(db, "react-blog2", id));
-      toast.success("Twój post został usunięty");
-    } catch (error) {
-      toast.error("coś poszło nie tak");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-  useEffect(() => {
-    getPosts();
-  }, [user, loading]);
+  const { posts, deletePost } = useMyPost();
   return (
     <>
       <Container maxWidth="sm" sx={{ marginTop: 2 }}>
         <Typography variant="h6" component="h3">
-          Twoje posty
+          Your posts
         </Typography>
         {posts?.map((e) => {
           return (
@@ -84,7 +30,6 @@ const MyPost = () => {
                 </IconButton>
                 <Typography variant="h6" component="h3">
                   {e?.userName}
-                  {/* || e?.author[0].email} */}
                 </Typography>
               </Box>
               <Box marginLeft={5} marginBottom={3}>
@@ -103,7 +48,7 @@ const MyPost = () => {
                   variant="subtitle1"
                   component="h1"
                 >
-                  Usuń
+                  Remove
                 </Typography>
                 <BorderColorSharp sx={{ marginLeft: 2 }} />
                 <Typography
@@ -116,7 +61,7 @@ const MyPost = () => {
                     color: "black",
                   }}
                 >
-                  Edytuj
+                  Edit
                 </Typography>
               </Box>
             </Paper>

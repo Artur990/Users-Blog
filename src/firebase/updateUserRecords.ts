@@ -13,14 +13,13 @@ const getQueryDocs = async (collectionName: string, uid: any): Promise<any> => {
   return await getDocs(q);
 };
 
-const updateUserRecords = (
+export const updateUserRecords = (
   collectionName: string,
   uid: any,
   updatedObj: any
 ): Promise<any> => {
   return new Promise(async (resolve, reject): Promise<any> => {
     try {
-      // const snapshot = await getDocs(q);
       const snapshot = await getQueryDocs(collectionName, uid);
       const updatePromises = [] as any;
       snapshot.forEach((document: any) => {
@@ -35,5 +34,3 @@ const updateUserRecords = (
     }
   });
 };
-
-export default updateUserRecords;
