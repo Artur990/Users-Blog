@@ -1,16 +1,16 @@
-import { Backdrop, CircularProgress } from "@mui/material";
-import { useAuth } from "../context/AuthContext";
+import { Backdrop, CircularProgress } from '@mui/material'
+import { useAuth } from '../context/AuthContext'
 
 const Loading = () => {
-  const { isLoading } = useAuth();
+  const { isLoading } = useAuth()
   return (
     <Backdrop
       open={isLoading}
       sx={{ zIndex: (theme) => theme.zIndex.drawer + 999 }}
     >
-      <CircularProgress sx={{ color: "white" }} />
+      <CircularProgress sx={{ color: 'white' }} />
     </Backdrop>
-  );
-};
+  )
+}
 
-export default Loading;
+export default Loading

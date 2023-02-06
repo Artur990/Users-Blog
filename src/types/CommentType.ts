@@ -1,9 +1,9 @@
 export type Comment = {
-  id: number;
-  userName: string;
-  comment: string;
-  createdAT: string;
-};
+  id: number
+  userName: string
+  comment: string
+  createdAT: string
+}
 export type Inputs = {
-  comment: string;
-};
+  comment: string
+}

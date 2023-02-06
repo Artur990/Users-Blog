@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, createContext } from "react";
+import React, { useContext, useEffect, useState, createContext } from 'react'
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -13,33 +13,30 @@ import {
   EmailAuthProvider,
   reauthenticateWithCredential,
   AuthError,
-} from "firebase/auth";
-import { addDoc, collection, deleteDoc, doc } from "firebase/firestore";
-import toast from "react-hot-toast";
-import { Navigate, Outlet, useNavigate } from "react-router-dom";
-
-import { AppContextInterface } from "../types/AppContextInterface";
-import { auth, db } from "../firebase/config";
-import moment from "moment";
-// import { PrivatedRoute } from "../utils/PrivateRoute";
+} from 'firebase/auth'
+import { addDoc, collection, deleteDoc, doc } from 'firebase/firestore'
+import toast from 'react-hot-toast'
+import { useNavigate } from 'react-router-dom'
+import { AppContextInterface } from '../types/appContextInterface'
+import { auth, db } from '../firebase/config'
+import moment from 'moment'
 
 export const AuthContext = createContext<AppContextInterface>(
   {} as AppContextInterface
-);
+)
 export const useAuth = () => {
-  return useContext(AuthContext);
-};
+  return useContext(AuthContext)
+}
 
 interface Props {
-  children: JSX.Element;
+  children: JSX.Element
 }
 export const AuthContextProvider: React.FC<Props> = ({ children }) => {
-  const navigate = useNavigate();
-  const [currentUsers, setcurrentUsers] = useState<User | null>(null);
-  const [currentUsersRoot, setcurrentUsersRoot] = useState<boolean>(false);
-  const [isReAuth, setisReAuth] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const collectionRef = collection(db, "Users");
+  const navigate = useNavigate()
+  const [currentUsers, setcurrentUsers] = useState<User | null>(null)
+  const [isReAuth, setisReAuth] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const collectionRef = collection(db, 'Users')
 
   const signUp = async (
     email: string,
@@ -47,16 +44,15 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
     password: string,
     phoneNumber: string
   ) => {
-    setIsLoading(true);
-    setcurrentUsersRoot(true);
+    setIsLoading(true)
     try {
       const userCredentials = await createUserWithEmailAndPassword(
         auth,
         email,
         password
-      );
+      )
 
-      setcurrentUsers(userCredentials.user);
+      setcurrentUsers(userCredentials.user)
       addDoc(collectionRef, {
         id: moment().format(),
         name: name,
@@ -64,142 +60,137 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
         password: password,
         phoneNumber: phoneNumber,
         uid: userCredentials.user.uid,
-        photoURL: "",
+        photoURL: '',
         isAdmin: false,
-      });
-      // currentUsersRoot
-      setcurrentUsersRoot(true);
-      navigate("/");
-      toast.success("You have been registered");
-      return userCredentials;
+      })
+      navigate('/')
+      toast.success('You have been registered')
+      return userCredentials
     } catch (err) {
-      console.error(err as AuthError);
-      toast.error("Something went wrong");
-      return null;
+      console.error(err as AuthError)
+      toast.error('Something went wrong')
+      return null
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
   const login = async (email: string, password: string) => {
-    setIsLoading(true);
-    setcurrentUsersRoot(true);
+    setIsLoading(true)
     try {
       const userCredentials = await signInWithEmailAndPassword(
         auth,
         email,
         password
-      );
-      setcurrentUsers(userCredentials.user);
-      setcurrentUsersRoot(true);
-      toast.success("You have been logged in");
+      )
+      setcurrentUsers(userCredentials.user)
+      navigate('/')
+      toast.success('You have been logged in')
     } catch (err) {
-      toast.error("Something went wrong");
+      toast.error('Something went wrong')
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
   const logout = async () => {
-    setIsLoading(true);
+    setIsLoading(true)
     try {
-      await signOut(auth);
-      setcurrentUsers(null);
-      toast.success("You have been logged out");
-      setcurrentUsersRoot(false);
+      await signOut(auth)
+      setcurrentUsers(null)
+      toast.success('You have been logged out')
     } catch (error) {
-      toast.error("Something went wrong");
+      toast.error('Something went wrong')
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
   const handleGoogleLogin = () => {
     try {
-      const provaider = new GoogleAuthProvider();
+      const provaider = new GoogleAuthProvider()
       signInWithPopup(auth, provaider).then(() => {
         addDoc(collectionRef, {
           name: auth.name,
           email: auth?.currentUser?.email,
-          password: "",
+          password: '',
           phoneNumber: auth?.currentUser?.phoneNumber,
           uid: auth?.currentUser?.uid,
-          photoURL: "",
+          photoURL: '',
           isAdmin: false,
-        });
-        setcurrentUsersRoot(true);
-        return navigate("/");
-      });
+        })
+        return navigate('/')
+      })
     } catch (error) {}
-  };
+  }
   const reAuth = async (password: string) => {
-    setIsLoading(true);
+    setIsLoading(true)
     const credential = EmailAuthProvider.credential(
       currentUsers?.email as string,
       password
-    );
+    )
     try {
-      setisReAuth(true);
+      setisReAuth(true)
       if (currentUsers) {
-        await reauthenticateWithCredential(currentUsers, credential);
+        await reauthenticateWithCredential(currentUsers, credential)
       }
-      navigate("/accountSettings");
+      navigate('/accountSettings')
     } catch (error) {
-      setisReAuth(false);
-      toast.error("Something went wrong");
+      setisReAuth(false)
+      toast.error('Something went wrong')
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
   const upDatePassword = async (password: string) => {
-    setIsLoading(true);
+    setIsLoading(true)
     try {
       if (currentUsers) {
-        updatePassword(currentUsers, password);
+        updatePassword(currentUsers, password)
       }
-      toast.success("Your password has been changed");
-      navigate("/");
+      toast.success('Your password has been changed')
+      navigate('/')
     } catch (error) {
-      toast.error("Something went wrong");
+      toast.error('Something went wrong')
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   const upDateEmail = async (email: string) => {
-    setIsLoading(true);
+    setIsLoading(true)
     try {
       if (currentUsers) {
-        await updateEmail(currentUsers, email);
+        await updateEmail(currentUsers, email)
       }
-      toast.success("Your email has been changed");
+      toast.success('Your email has been changed')
     } catch (error) {
-      toast.error("Something went wrong");
+      toast.error('Something went wrong')
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
   const deleteAccount = async () => {
-    setIsLoading(true);
+    setIsLoading(true)
     try {
       if (currentUsers) {
-        await deleteUser(currentUsers);
-        await deleteDoc(doc(db, "Users", currentUsers.uid));
+        await deleteUser(currentUsers)
+        await deleteDoc(doc(db, 'Users', currentUsers.uid))
       }
-      toast.success("Your account has been deleted");
+      toast.success('Your account has been deleted')
     } catch (error) {
-      toast.error("Something went wrong");
+      toast.error('Something went wrong')
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       if (firebaseUser) {
-        setcurrentUsers(firebaseUser);
+        setcurrentUsers(firebaseUser)
       }
-      console.log("user status changed");
-    });
-    return unsubscribe;
-  }, []);
+      console.log('user status changed')
+    })
+    return unsubscribe
+  }, [])
 
   const value = {
     currentUsers,
@@ -215,7 +206,6 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
     reAuth,
     isReAuth,
     setisReAuth,
-    currentUsersRoot,
-  };
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-};
+  }
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
+}

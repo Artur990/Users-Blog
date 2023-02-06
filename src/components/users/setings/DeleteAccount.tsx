@@ -1,29 +1,29 @@
-import { Send, Close } from "@mui/icons-material";
+import { Close } from '@mui/icons-material'
 import {
-  Button,
   DialogActions,
   DialogContent,
   DialogContentText,
   Dialog,
   DialogTitle,
   IconButton,
-} from "@mui/material";
+} from '@mui/material'
 
-import { useHandlerClose } from "../../../hooks/useHandlerClose";
-import { useDeleteAccount } from "../../../hooks/seting/useDeleteAccount";
+import { useHandlerClose } from '../../../hooks/useHandlerClose'
+import { useDeleteAccount } from '../../../hooks/seting/useDeleteAccount'
+import SubmitButton from '../input/SubmitButton'
 
 const DeleteAccount = () => {
-  const { handlerClose } = useHandlerClose();
-  const { handleSubmit } = useDeleteAccount();
+  const { handlerClose } = useHandlerClose()
+  const { handleSubmit } = useDeleteAccount()
   return (
     <Dialog open={true}>
       <DialogTitle>
-        Usuń konto
+        Remove account
         <IconButton
           aria-label="Close"
           onClick={handlerClose}
           sx={{
-            position: "absolute",
+            position: 'absolute',
             top: 8,
             right: 8,
             color: (theme) => theme.palette.grey[500],
@@ -36,17 +36,15 @@ const DeleteAccount = () => {
       <form onSubmit={handleSubmit}>
         <DialogContent dividers>
           <DialogContentText>
-            Czy jesteś pewny, że chcesz usunąc swoje konto?
+            Are you sure you want to delete your account?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button variant="contained" endIcon={<Send />} type="submit">
-            Potwierdzam
-          </Button>
+          <SubmitButton id="button">Accept</SubmitButton>
         </DialogActions>
       </form>
     </Dialog>
-  );
-};
+  )
+}
 
-export default DeleteAccount;
+export default DeleteAccount

@@ -1,22 +1,22 @@
-import React from "react";
+import React from 'react'
 import {
   IconButton,
   InputAdornment,
   TextField,
   TextFieldProps,
-} from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { useState } from "react";
+} from '@mui/material'
+import { Visibility, VisibilityOff } from '@mui/icons-material'
+import { useState } from 'react'
 
 const Input = React.forwardRef<HTMLInputElement, TextFieldProps>(
   ({ label, type, ...props }, ref) => {
-    const [showPassword, setShowPassword] = useState<boolean>(false);
+    const [showPassword, setShowPassword] = useState<boolean>(false)
     const handleClick: React.MouseEventHandler<HTMLButtonElement> = () => {
-      setShowPassword(!showPassword);
-    };
+      setShowPassword(!showPassword)
+    }
     return (
       <TextField
-        type={showPassword ? "text" : type}
+        type={showPassword ? 'text' : type}
         margin="normal"
         variant="standard"
         autoFocus
@@ -25,7 +25,7 @@ const Input = React.forwardRef<HTMLInputElement, TextFieldProps>(
         InputProps={{
           endAdornment: (
             <InputAdornment position="end">
-              {label === "password" && (
+              {label === 'password' && (
                 <IconButton
                   aria-label="Toggle Password visibility"
                   onClick={handleClick}
@@ -38,8 +38,8 @@ const Input = React.forwardRef<HTMLInputElement, TextFieldProps>(
         }}
         {...props}
       />
-    );
+    )
   }
-);
+)
 
-export default Input;
+export default Input

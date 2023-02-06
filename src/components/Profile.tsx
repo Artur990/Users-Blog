@@ -1,4 +1,4 @@
-import { Close, Send } from "@mui/icons-material";
+import { Close, Send } from '@mui/icons-material'
 import {
   Avatar,
   Button,
@@ -9,13 +9,13 @@ import {
   DialogTitle,
   IconButton,
   TextField,
-} from "@mui/material";
+} from '@mui/material'
 
-import { useProfile } from "../hooks/useProfile";
+import { useProfile } from '../hooks/useProfile'
 
 const Profile = () => {
   const { navigate, setName, name, photoURL, handleSubmit, handleChange } =
-    useProfile();
+    useProfile()
   return (
     <Dialog open={true}>
       <DialogTitle>
@@ -24,7 +24,7 @@ const Profile = () => {
           aria-label="Close"
           onClick={() => navigate(-1)}
           sx={{
-            position: "absolute",
+            position: 'absolute',
             top: 8,
             right: 8,
             color: (theme) => theme.palette.grey[500],
@@ -44,7 +44,7 @@ const Profile = () => {
           inputProps={{ minLength: 2 }}
           fullWidth
           variant="standard"
-          value={name || ""}
+          value={name || ''}
           required
           onChange={(e) => setName(e.target.value)}
         />
@@ -53,12 +53,12 @@ const Profile = () => {
             accept="image/*"
             id="profilePhoto"
             type="file"
-            style={{ display: "none" }}
+            style={{ display: 'none' }}
             onChange={handleChange}
           />
           <Avatar
-            src={photoURL ? photoURL : ""}
-            sx={{ width: 75, height: 75, cursor: "pointer" }}
+            src={photoURL ? photoURL : ''}
+            sx={{ width: 75, height: 75, cursor: 'pointer' }}
           />
         </label>
       </DialogContent>
@@ -68,7 +68,7 @@ const Profile = () => {
         </Button>
       </DialogActions>
     </Dialog>
-  );
-};
+  )
+}
 
-export default Profile;
+export default Profile

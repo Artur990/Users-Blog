@@ -1,35 +1,30 @@
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import {
-  RegisterSchema,
-  RegisterSchemaType,
-} from "../utils/schemas/RegisterSchema";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { ResultHandler } from "../types/ResultHandler";
-import { useAuth } from "../context/AuthContext";
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { RegisterSchema, RegisterSchemaType } from '../schemas/registerSchema'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useAuth } from '../context/AuthContext'
 
-export const useRegisterUser = ({ onError, onSuccess }: ResultHandler) => {
-  const { signUp } = useAuth();
+export const useRegisterUser = () => {
+  const { signUp } = useAuth()
   const { handleSubmit, ...form } = useForm<RegisterSchemaType>({
     resolver: zodResolver(RegisterSchema),
-  });
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  })
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const handleRegisterUser = ({
     name,
     email,
     password,
     phoneNumber,
   }: RegisterSchemaType) => {
-    setIsLoading(true);
+    setIsLoading(true)
     try {
-      signUp(email, name, password, phoneNumber);
-      onSuccess = () => {};
+      signUp(email, name, password, phoneNumber)
     } catch (err) {
-      onError = () => {};
+      console.log(err)
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   return {
     isLoading,
@@ -38,5 +33,5 @@ export const useRegisterUser = ({ onError, onSuccess }: ResultHandler) => {
       handleRegisterUser: handleSubmit(handleRegisterUser),
       ...form,
     },
-  };
-};
+  }
+}

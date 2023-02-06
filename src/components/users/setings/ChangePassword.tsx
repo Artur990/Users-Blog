@@ -1,31 +1,26 @@
-import {
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  TextField,
-} from "@mui/material";
+import { DialogActions, DialogContent, DialogContentText } from '@mui/material'
 
-import { Close } from "@mui/icons-material";
-import { Dialog, DialogTitle, IconButton } from "@mui/material";
-import SubmitButton from "../input/SubmitButton";
-import { useHandlerClose } from "../../../hooks/useHandlerClose";
-import Input from "../input/Input";
+import { Close } from '@mui/icons-material'
+import { Dialog, DialogTitle, IconButton } from '@mui/material'
+import SubmitButton from '../input/SubmitButton'
+import { useHandlerClose } from '../../../hooks/useHandlerClose'
+import Input from '../input/Input'
 
-import { useChangePassword } from "../../../hooks/seting/useChangePassword";
+import { useChangePassword } from '../../../hooks/seting/useChangePassword'
 
 const ChangePassword = () => {
-  const { handlerClose } = useHandlerClose();
-  const { errors, handleSubmit, register, submit } = useChangePassword();
+  const { handlerClose } = useHandlerClose()
+  const { errors, handleSubmit, register, submit } = useChangePassword()
   return (
     <>
       <Dialog open={true}>
         <DialogTitle>
-          Zmiana hasła
+          Changing the password
           <IconButton
             aria-label="Close"
             onClick={handlerClose}
             sx={{
-              position: "absolute",
+              position: 'absolute',
               top: 8,
               right: 8,
               color: (theme) => theme.palette.grey[500],
@@ -36,11 +31,11 @@ const ChangePassword = () => {
         </DialogTitle>
         <form onSubmit={handleSubmit(submit)}>
           <DialogContent dividers>
-            <DialogContentText>Wpisz swoje nowe hasło:</DialogContentText>
+            <DialogContentText>Enter a new password:</DialogContentText>
             <Input
               id="password"
               label="password"
-              {...register("password", { required: true })}
+              {...register('password', { required: true })}
               type="password"
               placeholder="Enter password"
               defaultValue=""
@@ -50,7 +45,7 @@ const ChangePassword = () => {
             <Input
               id="confirmPassword"
               label="confirmPassword"
-              {...register("confirmPassword", { required: true })}
+              {...register('confirmPassword', { required: true })}
               type="password"
               placeholder="Enter confirmPassword"
               defaultValue=""
@@ -61,12 +56,12 @@ const ChangePassword = () => {
             />
           </DialogContent>
           <DialogActions>
-            <SubmitButton id="button">Wyslij</SubmitButton>
+            <SubmitButton id="button">Sumbit</SubmitButton>
           </DialogActions>
         </form>
       </Dialog>
     </>
-  );
-};
+  )
+}
 
-export default ChangePassword;
+export default ChangePassword

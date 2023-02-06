@@ -1,24 +1,22 @@
-import { useForm } from "react-hook-form";
-import { ReAuthSchema } from "../utils/schemas/ReAuthSchema";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { ResultHandler } from "../types/ResultHandler";
-import { useAuth } from "../context/AuthContext";
+import { useForm } from 'react-hook-form'
+import { ReAuthSchema, ReAuthSchemaSchemaType } from '../schemas/reAuthSchema'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useAuth } from '../context/AuthContext'
 
-export const useReAuthUser = ({ onError, onSuccess }: ResultHandler) => {
-  const { reAuth } = useAuth();
-  const { handleSubmit, ...form } = useForm<any>({
+export const useReAuthUser = () => {
+  const { reAuth } = useAuth()
+  const { handleSubmit, ...form } = useForm<ReAuthSchemaSchemaType>({
     resolver: zodResolver(ReAuthSchema),
-  });
+  })
 
-  const handleReAuthSchema = ({ password }: any) => {
+  const handleReAuthSchema = ({ password }: ReAuthSchemaSchemaType) => {
     try {
-      reAuth(password);
-      onSuccess = () => {};
+      reAuth(password)
     } catch (err) {
-      onError = () => {};
+      console.log(err)
     } finally {
     }
-  };
+  }
 
   return {
     handleSubmit,
@@ -26,5 +24,5 @@ export const useReAuthUser = ({ onError, onSuccess }: ResultHandler) => {
       handleReAuthSchema: handleSubmit(handleReAuthSchema),
       ...form,
     },
-  };
-};
+  }
+}

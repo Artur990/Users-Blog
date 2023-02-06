@@ -1,11 +1,11 @@
-import React from "react";
-import Button from "@mui/material/Button";
-import { Send } from "@mui/icons-material";
+import React from 'react'
+import Button from '@mui/material/Button'
+import { Send } from '@mui/icons-material'
 
 type Props = {
-  children: React.ReactNode;
-  id: string;
-};
+  children: React.ReactNode
+  id: string
+}
 const SubmitButton = ({ children, ...props }: Props) => {
   return (
     <Button
@@ -17,7 +17,7 @@ const SubmitButton = ({ children, ...props }: Props) => {
     >
       {children}
     </Button>
-  );
-};
+  )
+}
 
-export default SubmitButton;
+export default SubmitButton

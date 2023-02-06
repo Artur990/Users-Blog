@@ -4,30 +4,36 @@ import {
   Paper,
   TextareaAutosize,
   Typography,
-} from "@mui/material";
-import { doc, getDoc } from "firebase/firestore";
-import { useLoaderData } from "react-router-dom";
-import { db } from "../../firebase/config";
-import { PostType } from "../../types/postType";
-import { useEditPost } from "../../hooks/blog/useEditPost";
+} from '@mui/material'
+import { doc, getDoc } from 'firebase/firestore'
+import {
+  LoaderFunction,
+  LoaderFunctionArgs,
+  useLoaderData,
+} from 'react-router-dom'
+import { db } from '../../firebase/config'
+import { PostType } from '../../types/postType'
+import { useEditPost } from '../../hooks/blog/useEditPost'
 
-export const postLoader = async ({ params }: any) => {
-  const docRef = doc(db, "react-blog2", params.post);
-  const docSnap = await getDoc(docRef);
-  return { ...docSnap.data(), params, id: docSnap.id };
-};
+export const postLoader: LoaderFunction = async ({
+  params,
+}: LoaderFunctionArgs) => {
+  const docRef = doc(db, 'react-blog2', params.post as string)
+  const docSnap = await getDoc(docRef)
+  return { ...docSnap.data(), params, id: docSnap.id }
+}
 const EditPost = () => {
-  const post = useLoaderData() as PostType;
-  const { posts, setPost, submitPost } = useEditPost(post);
+  const post = useLoaderData() as PostType
+  const { posts, setPost, submitPost } = useEditPost(post)
   return (
     <Container maxWidth="sm" sx={{ marginTop: 2 }}>
       <Paper
         elevation={3}
         sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          flexDirection: "column",
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexDirection: 'column',
         }}
       >
         <Typography variant="h6" component="h3">
@@ -42,8 +48,8 @@ const EditPost = () => {
           style={{
             width: 300,
             height: 150,
-            background: "black",
-            color: "white",
+            background: 'black',
+            color: 'white',
           }}
           value={posts}
           maxLength={200}
@@ -58,7 +64,7 @@ const EditPost = () => {
         </Button>
       </Paper>
     </Container>
-  );
-};
+  )
+}
 
-export default EditPost;
+export default EditPost

@@ -1,15 +1,15 @@
-import { useCurrentUsers } from "../hooks/useCurrentUsers";
-import EditUsersList from "./EditUsersList";
+import { useCurrentUsers } from '../hooks/useCurrentUsers'
+import EditUsersList from './EditUsersList'
 
 const EditUsers = () => {
-  const { user } = useCurrentUsers();
+  const { user } = useCurrentUsers()
   return (
     <>
       {user?.map((e) => {
-        return <EditUsersList key={e.id} {...e} />;
+        return <EditUsersList key={e.id} {...e} />
       })}
     </>
-  );
-};
+  )
+}
 
-export default EditUsers;
+export default EditUsers
