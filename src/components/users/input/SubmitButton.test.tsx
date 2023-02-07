@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react'
-import SubmitButton from './SubmitButton'
 import { act } from 'react-dom/test-utils'
+import SubmitButton from './SubmitButton'
 
 test('submitButton', async () => {
   await act(async () => {
@@ -10,9 +10,7 @@ test('submitButton', async () => {
     const divElement = screen.getByText(/Button/i)
 
     fireEvent.click(divElement)
+    expect(divElement).toHaveTextContent('Button')
+    // expect(divElement).toHaveBeenCalledTimes(0)
   })
-
-  // expect(onClick).toHaveBeenCalledTimes(0)
-
-  // expect(divElement).toHaveTextContent('Button')
 })

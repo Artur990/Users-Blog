@@ -9,9 +9,10 @@ import {
 import { Box, Container } from '@mui/system'
 import { doc, getDoc } from 'firebase/firestore'
 import { useLoaderData } from 'react-router-dom'
+import moment from 'moment'
+
 import { db } from '../../firebase/config'
 import { PostType } from '../../types/postType'
-import moment from 'moment'
 import { useGetComments } from '../../hooks/blog/useGetComments'
 import { useSubmitPost } from '../../hooks/blog/useSubmitPost'
 

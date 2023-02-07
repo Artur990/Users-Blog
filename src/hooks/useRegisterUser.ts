@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { RegisterSchema, RegisterSchemaType } from '../schemas/registerSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { toast } from 'react-hot-toast'
+import { RegisterSchema, RegisterSchemaType } from '../schemas/registerSchema'
 import { useAuth } from '../context/AuthContext'
 
 export const useRegisterUser = () => {
@@ -20,7 +21,7 @@ export const useRegisterUser = () => {
     try {
       signUp(email, name, password, phoneNumber)
     } catch (err) {
-      console.log(err)
+      toast.error('something went wrong')
     } finally {
       setIsLoading(false)
     }

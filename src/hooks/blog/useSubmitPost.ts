@@ -1,8 +1,8 @@
 import { toast } from 'react-hot-toast'
 import { useState } from 'react'
-import { useAuth } from '../../context/AuthContext'
 import { doc, updateDoc } from 'firebase/firestore'
 import moment from 'moment'
+import { useAuth } from '../../context/AuthContext'
 import { db } from '../../firebase/config'
 import { PostType } from '../../types/postType'
 

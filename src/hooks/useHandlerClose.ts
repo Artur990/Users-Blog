@@ -10,7 +10,7 @@ export const useHandlerClose = () => {
   const handlerClose = useCallback(() => {
     navigate('/')
     setisReAuth(false)
-  }, [])
+  }, [setisReAuth, navigate])
 
   return { handlerClose }
 }

@@ -10,12 +10,12 @@ import {
 } from 'firebase/firestore'
 import { db } from './config'
 
-const getQueryDocs = async (
+const getQueryDocs = (
   collectionName: string,
   uid: string
 ): Promise<QuerySnapshot<DocumentData>> => {
   const q = query(collection(db, collectionName), where('uid', '==', uid))
-  return await getDocs<DocumentData>(q)
+  return getDocs<DocumentData>(q)
 }
 
 export const updateUserRecords = (
@@ -23,16 +23,16 @@ export const updateUserRecords = (
   uid: string,
   updatedObj: any
 ): Promise<void> => {
-  return new Promise(async (resolve, reject): Promise<void> => {
+  return new Promise((resolve, reject): any => {
     try {
-      const snapshot = await getQueryDocs(collectionName, uid)
+      const snapshot = getQueryDocs(collectionName, uid) as any
       const updatePromises = [] as any
       snapshot.forEach((document: any) => {
         updatePromises.push(
           updateDoc(doc(db, collectionName, document.id), updatedObj)
         )
       })
-      await Promise.all(updatePromises)
+      Promise.all(updatePromises)
       resolve(updatePromises)
     } catch (error) {
       reject(error)

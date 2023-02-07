@@ -1,4 +1,3 @@
-import React from 'react'
 import { Container } from '@mui/system'
 
 import { useBlog } from '../../hooks/blog/useBlog'

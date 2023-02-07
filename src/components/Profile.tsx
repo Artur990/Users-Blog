@@ -17,7 +17,7 @@ const Profile = () => {
   const { navigate, setName, name, photoURL, handleSubmit, handleChange } =
     useProfile()
   return (
-    <Dialog open={true}>
+    <Dialog open={!!true}>
       <DialogTitle>
         Profile
         <IconButton
@@ -57,7 +57,7 @@ const Profile = () => {
             onChange={handleChange}
           />
           <Avatar
-            src={photoURL ? photoURL : ''}
+            src={photoURL}
             sx={{ width: 75, height: 75, cursor: 'pointer' }}
           />
         </label>

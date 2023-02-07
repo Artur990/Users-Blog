@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../../context/AuthContext'
 import { addDoc, collection } from 'firebase/firestore'
 import moment from 'moment'
 import { toast } from 'react-hot-toast'
+import { useAuth } from '../../context/AuthContext'
 import { db } from '../../firebase/config'
 
 export const useCreatePost = () => {
@@ -29,9 +29,8 @@ export const useCreatePost = () => {
       })
       toast.success('Your post has been added')
       navigate('/')
-    } catch (error) {
+    } catch (err) {
       toast.error('Something went wrong')
-      console.log(error)
     } finally {
       setIsLoading(false)
     }

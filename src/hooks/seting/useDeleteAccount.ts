@@ -1,3 +1,4 @@
+import { toast } from 'react-hot-toast'
 import { useAuth } from '../../context/AuthContext'
 
 export const useDeleteAccount = () => {
@@ -7,7 +8,7 @@ export const useDeleteAccount = () => {
     try {
       deleteAccount()
     } catch (err) {
-      console.log(err)
+      toast.error('Something went wrong')
     }
   }
   return { handleSubmit }

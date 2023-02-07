@@ -12,14 +12,13 @@ import {
   updateEmail,
   EmailAuthProvider,
   reauthenticateWithCredential,
-  AuthError,
 } from 'firebase/auth'
 import { addDoc, collection, deleteDoc, doc } from 'firebase/firestore'
 import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
+import moment from 'moment'
 import { AppContextInterface } from '../types/appContextInterface'
 import { auth, db } from '../firebase/config'
-import moment from 'moment'
 
 export const AuthContext = createContext<AppContextInterface>(
   {} as AppContextInterface
@@ -55,10 +54,10 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
       setcurrentUsers(userCredentials.user)
       addDoc(collectionRef, {
         id: moment().format(),
-        name: name,
-        email: email,
-        password: password,
-        phoneNumber: phoneNumber,
+        name,
+        email,
+        password,
+        phoneNumber,
         uid: userCredentials.user.uid,
         photoURL: '',
         isAdmin: false,
@@ -67,7 +66,7 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
       toast.success('You have been registered')
       return userCredentials
     } catch (err) {
-      console.error(err as AuthError)
+      toast.error('Something went wrong')
       toast.error('Something went wrong')
       return null
     } finally {
@@ -118,7 +117,9 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
         })
         return navigate('/')
       })
-    } catch (error) {}
+    } catch (err) {
+      toast.error('Something went wrong')
+    }
   }
   const reAuth = async (password: string) => {
     setIsLoading(true)
@@ -192,20 +193,34 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
     return unsubscribe
   }, [])
 
-  const value = {
-    currentUsers,
-    signUp,
-    login,
-    logout,
-    handleGoogleLogin,
-    upDateEmail,
-    upDatePassword,
-    deleteAccount,
-    isLoading,
-    setIsLoading,
-    reAuth,
-    isReAuth,
-    setisReAuth,
-  }
+  const value = React.useMemo(
+    () => ({
+      currentUsers,
+      signUp,
+      login,
+      logout,
+      handleGoogleLogin,
+      upDateEmail,
+      upDatePassword,
+      deleteAccount,
+      isLoading,
+      setIsLoading,
+      reAuth,
+      isReAuth,
+      setisReAuth,
+    }),
+    [
+      currentUsers,
+      reAuth,
+      setcurrentUsers,
+      isLoading,
+      isReAuth,
+      login,
+      signUp,
+      upDateEmail,
+      upDatePassword,
+      deleteAccount,
+    ]
+  )
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }

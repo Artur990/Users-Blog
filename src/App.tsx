@@ -1,14 +1,16 @@
 import React from 'react'
 import {
-  BrowserRouter,
   Navigate,
   Outlet,
   Route,
   RouterProvider,
-  useLoaderData,
+  createBrowserRouter,
+  createRoutesFromElements,
 } from 'react-router-dom'
-
-import { createBrowserRouter, createRoutesFromElements } from 'react-router-dom'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
+import { zhCN } from '@mui/material/locale'
+import { User } from 'firebase/auth'
+import { useAuth } from './context/AuthContext'
 
 import Register from './components/users/Register'
 import Login from './components/users/Login'
@@ -18,29 +20,23 @@ import ReAuth from './components/users/setings/ReAuth'
 import ChangeEmail from './components/users/setings/ChangeEmail'
 import DeleteAccount from './components/users/setings/DeleteAccount'
 
-import { PrivatedRouteReAuth, RootLoader } from './components/PrivateRoute'
+import { PrivatedRouteReAuth } from './components/PrivateRoute'
 // import { PrivatedRoute } from './components/PrivateRoute'
 
 import CreatePost from './components/blog/CreatePost'
 import MyPost from './components/blog/MyPost'
 import Blogs from './components/blog/Blogs'
-import Error from './Error'
+import Error from './components/Error'
 import Post, { blogLoader } from './components/blog/Post'
 import EditPost, { postLoader } from './components/blog/EditPost'
 import EditUsers from './components/EditUserst'
 import Profile from './components/Profile'
 import Main from './components/Main'
 
-import { User } from 'firebase/auth'
-import { auth } from './firebase/config'
-import { useAuthState } from 'react-firebase-hooks/auth'
-import { useAuth } from './context/AuthContext'
-import { createTheme, ThemeProvider } from '@mui/material/styles'
-import { zhCN } from '@mui/material/locale'
-
 export const loginn = (email: any, password: any) => {
   return new Promise((resolve) => {
     setTimeout(() => {
+      resolve(password)
       resolve(email)
     }, 500)
   })
@@ -50,12 +46,11 @@ const PrivatedRoute = () => {
   const [localUser, setLocalUser] = React.useState<User>()
 
   React.useEffect(() => {
-    if (!!currentUsers) {
+    if (currentUsers) {
       setLocalUser(currentUsers)
     }
   }, [currentUsers])
-  console.log(localUser)
-  console.log(currentUsers)
+  console.log(localUser?.uid)
   return true ? <Outlet /> : <Navigate to="/" />
 }
 const JSXRouter = createBrowserRouter(
@@ -113,7 +108,5 @@ const App: React.FC = () => {
     </ThemeProvider>
   )
 }
-
-// const [user] = useAuthState(auth)
 
 export default App

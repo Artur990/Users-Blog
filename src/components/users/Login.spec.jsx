@@ -1,9 +1,8 @@
-import React from 'react'
 import { render, fireEvent, screen } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
-import Login from './Login'
 import user from '@testing-library/user-event'
 import { BrowserRouter } from 'react-router-dom'
+import Login from './Login'
 
 describe('SignIn', () => {
   describe('with valid inputs', () => {
@@ -15,7 +14,7 @@ describe('SignIn', () => {
         </BrowserRouter>
       )
       await act(async () => {
-        const email = screen.getByPlaceholderText(/enter e\-mail\.\.\.\./i)
+        const email = screen.getByPlaceholderText(/enter e-mail\.\.\.\./i)
         user.type(email, 'email@test.pl')
         const password = screen.getByPlaceholderText(
           /enter the password\.\.\.\./i
@@ -41,7 +40,7 @@ describe('SignIn', () => {
       )
 
       await act(async () => {
-        const email = screen.getByPlaceholderText(/enter e\-mail\.\.\.\./i)
+        const email = screen.getByPlaceholderText(/enter e-mail\.\.\.\./i)
         user.type(email, 'email@test.pl')
         const password = screen.getByPlaceholderText(
           /enter the password\.\.\.\./i
@@ -78,7 +77,7 @@ describe('SignIn', () => {
         fireEvent.submit(btn)
         expect(container.innerHTML).toMatch('')
       })
-      // here to coud be but somethin is wong ("Password is too short")
+      // here to coud be ("Password is too short"), but somethin is wong
     })
   })
 })

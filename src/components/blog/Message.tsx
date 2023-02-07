@@ -40,7 +40,7 @@ const Message = (props: PostType) => (
                 cursor: 'none',
               },
             }}
-            src={props?.author[0]?.avatar ? props.author[0].avatar : ''}
+            src={props?.author[0]?.avatar ? props?.author[0].avatar : ''}
           >
             {props?.userName?.charAt(0)?.toUpperCase() ||
               props?.author[0].email?.charAt(0)?.toUpperCase()}
@@ -57,7 +57,7 @@ const Message = (props: PostType) => (
         }}
       >
         <Typography variant="subtitle1" component="h2">
-          {props.postText}
+          {props?.postText}
         </Typography>
       </Box>
       <Box
@@ -83,7 +83,7 @@ const Message = (props: PostType) => (
           >
             {!props?.comments?.length ? 0 : props?.comments?.length} Comments
           </Typography>
-          <Link href={`post/${props.id}`} underline="none">
+          <Link href={`post/${props?.id}`} underline="none">
             <Button sx={{ margin: 1, textTransform: 'none' }}>add</Button>
           </Link>
         </Box>

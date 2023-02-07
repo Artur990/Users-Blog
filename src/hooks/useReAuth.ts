@@ -1,6 +1,7 @@
 import { useForm } from 'react-hook-form'
-import { ReAuthSchema, ReAuthSchemaSchemaType } from '../schemas/reAuthSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { toast } from 'react-hot-toast'
+import { ReAuthSchema, ReAuthSchemaSchemaType } from '../schemas/reAuthSchema'
 import { useAuth } from '../context/AuthContext'
 
 export const useReAuthUser = () => {
@@ -13,8 +14,7 @@ export const useReAuthUser = () => {
     try {
       reAuth(password)
     } catch (err) {
-      console.log(err)
-    } finally {
+      toast.error('something went wrong')
     }
   }
 

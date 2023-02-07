@@ -2,6 +2,7 @@ module.exports = {
   env: {
     browser: true,
     node: true,
+    jest: true,
   },
   parserOptions: {
     tsconfigRootDir: __dirname,
@@ -37,5 +38,13 @@ module.exports = {
       "error",
       { namedComponents: "arrow-function" },
     ],
+    "react/jsx-props-no-spreading": "off",
+    "import/prefer-default-export": "off",
+    "consistent-return": ["error", { treatUndefinedAsUnspecified: true }],
+    "no-unsafe-optional-chaining": [
+      "error",
+      { disallowArithmeticOperators: false },
+    ],
+    // "consistent-retur": ["error", { treatUndefinedAsUnspecified: false }],
   },
 };

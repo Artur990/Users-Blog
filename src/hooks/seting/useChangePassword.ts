@@ -1,6 +1,7 @@
-import { useAuth } from '../../context/AuthContext'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { toast } from 'react-hot-toast'
+import { useAuth } from '../../context/AuthContext'
 import {
   ChangePasswordSchema,
   ChangePasswordSchemaType,
@@ -20,7 +21,7 @@ export const useChangePassword = () => {
     try {
       upDatePassword(password)
     } catch (err) {
-      console.log(err)
+      toast.error('Something went wrong')
     } finally {
       setisReAuth(false)
     }

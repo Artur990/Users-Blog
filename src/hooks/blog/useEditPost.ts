@@ -1,8 +1,8 @@
 import { doc, updateDoc } from 'firebase/firestore'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { db } from '../../firebase/config'
 import { toast } from 'react-hot-toast'
+import { db } from '../../firebase/config'
 import { PostType } from '../../types/postType'
 
 export const useEditPost = (post: PostType) => {

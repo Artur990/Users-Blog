@@ -1,8 +1,7 @@
 import { Typography } from '@mui/material'
-import { Box, Container } from '@mui/system'
-import React from 'react'
+import { Container } from '@mui/system'
 
-function Error() {
+const Error = () => {
   return (
     <Container
       sx={{

@@ -1,9 +1,10 @@
-import { LoginSchema, LoginSchemaType } from '../schemas/loginSchema'
+import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { toast } from 'react-hot-toast'
+import { LoginSchema, LoginSchemaType } from '../schemas/loginSchema'
 import { useAuth } from '../context/AuthContext'
-import { useNavigate } from 'react-router-dom'
 
 export const useLoginUser = ({ loginn }: any) => {
   const navigate = useNavigate()
@@ -21,7 +22,7 @@ export const useLoginUser = ({ loginn }: any) => {
       login(email, password)
       navigate('/')
     } catch (err) {
-      console.log(err)
+      toast.error('something went wrong')
     } finally {
       setIsLoading(false)
     }

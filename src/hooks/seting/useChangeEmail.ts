@@ -1,7 +1,8 @@
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../../context/AuthContext'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { toast } from 'react-hot-toast'
+import { useAuth } from '../../context/AuthContext'
 import {
   ChangeEmailSchema,
   ChangeEmailSchemaType,
@@ -23,7 +24,7 @@ export const useChangeEmail = () => {
       upDateEmail(email)
       navigate('/')
     } catch (err) {
-      console.log(err)
+      toast.error('Something went wrong')
     }
   }
   return { handleSubmit, register, errors, submit }

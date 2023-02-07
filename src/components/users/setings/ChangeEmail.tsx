@@ -3,9 +3,11 @@ import {
   DialogContent,
   DialogContentText,
   TextField,
+  Dialog,
+  DialogTitle,
+  IconButton,
 } from '@mui/material'
 import { Close } from '@mui/icons-material'
-import { Dialog, DialogTitle, IconButton } from '@mui/material'
 import SubmitButton from '../input/SubmitButton'
 import { useChangeEmail } from '../../../hooks/seting/useChangeEmail'
 import { useHandlerClose } from '../../../hooks/useHandlerClose'
@@ -14,7 +16,7 @@ const ChangeEmail = () => {
   const { handlerClose } = useHandlerClose()
   const { errors, handleSubmit, register, submit } = useChangeEmail()
   return (
-    <Dialog open={true}>
+    <Dialog open={!!true}>
       <DialogTitle>
         Change Email:
         <IconButton
@@ -38,7 +40,7 @@ const ChangeEmail = () => {
             id="email"
             label="email"
             {...register('email')}
-            required={true}
+            required={!true}
             type="email"
             placeholder="Enter email"
             defaultValue=""

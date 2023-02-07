@@ -12,8 +12,8 @@ import Tooltip from '@mui/material/Tooltip'
 import MenuItem from '@mui/material/MenuItem'
 import AdbIcon from '@mui/icons-material/Adb'
 
-import { useAuth } from '../context/AuthContext'
 import { Link } from '@mui/material'
+import { useAuth } from '../context/AuthContext'
 
 const Navbar: React.FC = () => {
   const { currentUsers, logout } = useAuth()
@@ -82,7 +82,7 @@ const Navbar: React.FC = () => {
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   <Avatar
                     src={currentUsers.photoURL ? currentUsers.photoURL : ''}
-                  ></Avatar>
+                  />
                 </IconButton>
               </Tooltip>
               <Menu

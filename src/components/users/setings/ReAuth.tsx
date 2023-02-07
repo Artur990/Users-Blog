@@ -3,9 +3,11 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
+  Dialog,
+  DialogTitle,
+  IconButton,
 } from '@mui/material'
 import { Close } from '@mui/icons-material'
-import { Dialog, DialogTitle, IconButton } from '@mui/material'
 
 import SubmitButton from '../input/SubmitButton'
 import { useReAuthUser } from '../../../hooks/useReAuth'
@@ -21,7 +23,7 @@ const ReAuth = () => {
   } = useReAuthUser()
 
   return (
-    <Dialog open={true}>
+    <Dialog open={!!true}>
       <DialogTitle>
         Confirm password
         <IconButton
