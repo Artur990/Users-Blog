@@ -1,3 +1,5 @@
+// to tylko lokalny config do IDE, react-scripts npm start bierze swoj config z react-scripts
+
 module.exports = {
   env: {
     browser: true,
@@ -25,8 +27,8 @@ module.exports = {
   },
 
   ignorePatterns: [
-    "**/*.js",
-    "**/*.json",
+    // "**/*.js", JSa niech tez sprwadza
+    // "**/*.json", niech tez sprawdza
     "node_modules",
     "public",
     "coverage",

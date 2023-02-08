@@ -23,6 +23,7 @@ export const updateUserRecords = (
   uid: string,
   updatedObj: any
 ): Promise<void> => {
+  // mozna zwykla funkcje  async await zrobic zamiast new Promise?
   return new Promise((resolve, reject): any => {
     try {
       const snapshot = getQueryDocs(collectionName, uid) as any

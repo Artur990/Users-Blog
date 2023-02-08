@@ -66,7 +66,7 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
       toast.success('You have been registered')
       return userCredentials
     } catch (err) {
-      toast.error('Something went wrong')
+      toast.error('Something went wrong') // zduplikowane?
       toast.error('Something went wrong')
       return null
     } finally {

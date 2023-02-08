@@ -1,12 +1,14 @@
 import { User } from 'firebase/auth'
+
 export interface AppContextInterface {
   currentUsers: User | null
-  signUp: (
+  // funkcje mozna opisywac tak w typescriptcie, dzieki temu TS lepiej wie ze to musi byc funkcja
+  signUp(
     email: string,
     name: string,
     password: string,
     phoneNumber: string
-  ) => void
+  ): void
   login: (email: string, password: string) => void
   logout: () => void
   handleGoogleLogin: () => void

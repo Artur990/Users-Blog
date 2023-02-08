@@ -1,3 +1,4 @@
+// interface zamiast typu
 export type Comment = {
   id: number
   userName: string

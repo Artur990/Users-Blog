@@ -32,7 +32,7 @@ const Register: React.FC = () => {
   } = useRegisterUser()
 
   return (
-    <Dialog open={!!true}>
+    <Dialog open>
       <DialogTitle>
         Register
         <IconButton

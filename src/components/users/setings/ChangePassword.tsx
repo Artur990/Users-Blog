@@ -17,7 +17,7 @@ const ChangePassword = () => {
   const { handlerClose } = useHandlerClose()
   const { errors, handleSubmit, register, submit } = useChangePassword()
   return (
-    <Dialog open={!!true}>
+    <Dialog open>
       <DialogTitle>
         Changing the password
         <IconButton

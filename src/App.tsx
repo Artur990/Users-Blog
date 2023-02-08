@@ -50,9 +50,12 @@ const PrivatedRoute = () => {
       setLocalUser(currentUsers)
     }
   }, [currentUsers])
+
   console.log(localUser?.uid)
+
   return true ? <Outlet /> : <Navigate to="/" />
 }
+
 const JSXRouter = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Main />} errorElement={<Error />}>
