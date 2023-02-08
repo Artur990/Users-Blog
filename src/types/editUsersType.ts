@@ -1,3 +1,4 @@
+// interface zamiast typu
 export type EditUserType = {
   email: string
   isAdmin: boolean

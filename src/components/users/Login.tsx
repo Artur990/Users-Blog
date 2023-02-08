@@ -29,7 +29,7 @@ const Login = ({ loginn }: any) => {
   } = useLoginUser({ loginn })
 
   return (
-    <Dialog open={!!true}>
+    <Dialog open>
       <DialogTitle>
         Login
         <IconButton

@@ -16,7 +16,7 @@ const DeleteAccount = () => {
   const { handlerClose } = useHandlerClose()
   const { handleSubmit } = useDeleteAccount()
   return (
-    <Dialog open={!!true}>
+    <Dialog open>
       <DialogTitle>
         Remove account
         <IconButton

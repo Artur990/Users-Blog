@@ -1,7 +1,7 @@
 import { doc, onSnapshot } from 'firebase/firestore'
 import { useEffect, useState } from 'react'
 import { db } from '../../firebase/config'
-import { Comment } from '../../types/commentType'
+import type { Comment } from '../../types/commentType'
 
 export const useGetComments = ({ id }: { id: string }) => {
   const [allmessaege, setAllMessage] = useState<Comment[] | null>(null)

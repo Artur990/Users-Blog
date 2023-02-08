@@ -1,3 +1,4 @@
+// interface zamiast typu
 export type PostType = {
   author: {
     avatar: string

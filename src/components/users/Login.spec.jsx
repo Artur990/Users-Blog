@@ -77,6 +77,7 @@ describe('SignIn', () => {
         fireEvent.submit(btn)
         expect(container.innerHTML).toMatch('')
       })
+      // mozna dac ID jakies temu errorowi i po id szukac
       // here to coud be ("Password is too short"), but somethin is wong
     })
   })
