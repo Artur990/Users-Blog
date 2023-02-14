@@ -6,17 +6,17 @@ import { toast } from 'react-hot-toast'
 import { LoginSchema, LoginSchemaType } from '../schemas/loginSchema'
 import { useAuth } from '../context/AuthContext'
 
-export const useLoginUser = ({ loginn }: any) => {
+export const useLoginUser = () => {
   const navigate = useNavigate()
   const { login } = useAuth()
   const { handleSubmit, setValue, ...form } = useForm<LoginSchemaType>({
     resolver: zodResolver(LoginSchema),
+    mode: 'onBlur',
   })
 
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const handleLoginUser = async ({ email, password }: LoginSchemaType) => {
-    await loginn(email, password)
     setIsLoading(true)
     try {
       login(email, password)

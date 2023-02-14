@@ -1,9 +1,9 @@
-export type Comment = {
+export interface Comment {
   id: number
   userName: string
   comment: string
   createdAT: string
 }
-export type Inputs = {
+export interface Inputs {
   comment: string
 }

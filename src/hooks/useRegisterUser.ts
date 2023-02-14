@@ -9,6 +9,7 @@ export const useRegisterUser = () => {
   const { signUp } = useAuth()
   const { handleSubmit, ...form } = useForm<RegisterSchemaType>({
     resolver: zodResolver(RegisterSchema),
+    mode: 'onBlur',
   })
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const handleRegisterUser = ({

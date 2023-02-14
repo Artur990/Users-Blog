@@ -1,4 +1,5 @@
 import { User } from 'firebase/auth'
+
 export interface AppContextInterface {
   currentUsers: User | null
   signUp: (

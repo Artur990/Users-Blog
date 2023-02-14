@@ -1,16 +1,11 @@
 import { fireEvent, render, screen } from '@testing-library/react'
-import { act } from 'react-dom/test-utils'
+
 import SubmitButton from './SubmitButton'
 
-test('submitButton', async () => {
-  await act(async () => {
-    //  const onClick = jest.fn()
-    render(<SubmitButton id="button">Button</SubmitButton>)
+test('submitButton', () => {
+  render(<SubmitButton id="button">Submit</SubmitButton>)
+  const divElement = screen.getByRole('button', { name: /submit/i })
 
-    const divElement = screen.getByText(/Button/i)
-
-    fireEvent.click(divElement)
-    expect(divElement).toHaveTextContent('Button')
-    // expect(divElement).toHaveBeenCalledTimes(0)
-  })
+  fireEvent.submit(divElement)
+  expect(divElement).toHaveTextContent('Submit')
 })

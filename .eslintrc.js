@@ -26,7 +26,6 @@ module.exports = {
 
   ignorePatterns: [
     "**/*.js",
-    "**/*.json",
     "node_modules",
     "public",
     "coverage",

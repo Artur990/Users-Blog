@@ -22,8 +22,8 @@ export const updateUserRecords = (
   collectionName: string,
   uid: string,
   updatedObj: any
-): Promise<void> => {
-  return new Promise((resolve, reject): any => {
+): Promise<any> => {
+  return new Promise((resolve, reject) => {
     try {
       const snapshot = getQueryDocs(collectionName, uid) as any
       const updatePromises = [] as any

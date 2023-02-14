@@ -23,7 +23,7 @@ const ReAuth = () => {
   } = useReAuthUser()
 
   return (
-    <Dialog open={!!true}>
+    <Dialog open>
       <DialogTitle>
         Confirm password
         <IconButton

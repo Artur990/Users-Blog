@@ -12,7 +12,7 @@ export const useProfile = () => {
   const { currentUsers, setIsLoading } = useAuth()
 
   const [name, setName] = useState(currentUsers?.displayName)
-  const [fileState, setFileState] = useState<File | null>(null)
+  const [fileState, setFileState] = useState<any | null>(null)
   const [photoURL, setPhotoURL] = useState<any>(currentUsers?.photoURL)
   const navigate = useNavigate()
   const handleChange = (e: any) => {
@@ -34,7 +34,7 @@ export const useProfile = () => {
           fileState,
           `profile/${currentUsers?.uid}/${imageName}`
         )
-
+        console.log('1')
         if (currentUsers?.photoURL) {
           const prevImage = currentUsers?.photoURL
             ?.split(`${currentUsers?.uid}%2F`)[1]
@@ -45,13 +45,11 @@ export const useProfile = () => {
             toast.error('something went wrong')
           }
         }
-
         userObj = { photoURL: url, isAdmin: true } as any
         imagesObj = { ...imagesObj, uPhoto: url } as any
       }
-
-      await updateProfile(currentUsers!, userObj)
       if (currentUsers) {
+        await updateProfile(currentUsers, userObj)
         await updateUserRecords('Users', currentUsers?.uid, imagesObj)
       }
       toast.success('Your profile has been updated')

@@ -17,7 +17,7 @@ import { useLoginUser } from '../../hooks/useLoginUser'
 import { useAuth } from '../../context/AuthContext'
 import Input from './input/Input'
 
-const Login = ({ loginn }: any) => {
+const Login = () => {
   const { handleGoogleLogin } = useAuth()
   const navigate = useNavigate()
   const {
@@ -26,10 +26,10 @@ const Login = ({ loginn }: any) => {
       formState: { errors },
       register,
     },
-  } = useLoginUser({ loginn })
+  } = useLoginUser()
 
   return (
-    <Dialog open={!!true}>
+    <Dialog open>
       <DialogTitle>
         Login
         <IconButton
@@ -54,10 +54,11 @@ const Login = ({ loginn }: any) => {
             id="email"
             type="email"
             label="email"
-            {...register('email', { required: true })}
+            aria-label="email"
+            {...register('email')}
             placeholder="Enter e-mail...."
             error={!!errors.email?.message}
-            helperText={errors.email && errors.email.message}
+            helperText={errors.email?.message && errors.email?.message}
             autoFocus
           />
           <Input
@@ -68,7 +69,6 @@ const Login = ({ loginn }: any) => {
             {...register('password', { required: true })}
             type="password"
             placeholder="Enter the password...."
-            defaultValue=""
             error={!!errors.password?.message}
             helperText={errors.password && errors.password.message}
           />

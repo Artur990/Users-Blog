@@ -16,7 +16,7 @@ const AccountSettings = () => {
     setisReAuth(false)
   }
   return (
-    <Dialog open={!!true}>
+    <Dialog open>
       <DialogTitle>
         Account settings
         <IconButton

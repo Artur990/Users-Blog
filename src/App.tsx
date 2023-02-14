@@ -1,7 +1,5 @@
 import React from 'react'
 import {
-  Navigate,
-  Outlet,
   Route,
   RouterProvider,
   createBrowserRouter,
@@ -9,8 +7,6 @@ import {
 } from 'react-router-dom'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { zhCN } from '@mui/material/locale'
-import { User } from 'firebase/auth'
-import { useAuth } from './context/AuthContext'
 
 import Register from './components/users/Register'
 import Login from './components/users/Login'
@@ -20,8 +16,7 @@ import ReAuth from './components/users/setings/ReAuth'
 import ChangeEmail from './components/users/setings/ChangeEmail'
 import DeleteAccount from './components/users/setings/DeleteAccount'
 
-import { PrivatedRouteReAuth } from './components/PrivateRoute'
-// import { PrivatedRoute } from './components/PrivateRoute'
+import { PrivatedRouteReAuth, PrivatedRoute } from './components/PrivateRoute'
 
 import CreatePost from './components/blog/CreatePost'
 import MyPost from './components/blog/MyPost'
@@ -33,31 +28,11 @@ import EditUsers from './components/EditUserst'
 import Profile from './components/Profile'
 import Main from './components/Main'
 
-export const loginn = (email: any, password: any) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(password)
-      resolve(email)
-    }, 500)
-  })
-}
-const PrivatedRoute = () => {
-  const { currentUsers } = useAuth()
-  const [localUser, setLocalUser] = React.useState<User>()
-
-  React.useEffect(() => {
-    if (currentUsers) {
-      setLocalUser(currentUsers)
-    }
-  }, [currentUsers])
-  console.log(localUser?.uid)
-  return true ? <Outlet /> : <Navigate to="/" />
-}
 const JSXRouter = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Main />} errorElement={<Error />}>
       <Route path="/register" element={<Register />} />
-      <Route path="/login" element={<Login loginn={loginn} />} />
+      <Route path="/login" element={<Login />} />
       <Route path="/" element={<Blogs />} />
       <Route element={<PrivatedRoute />}>
         <Route

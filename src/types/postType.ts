@@ -1,4 +1,4 @@
-export type PostType = {
+export interface PostType {
   author: {
     avatar: string
     email: string

@@ -16,7 +16,7 @@ const ChangeEmail = () => {
   const { handlerClose } = useHandlerClose()
   const { errors, handleSubmit, register, submit } = useChangeEmail()
   return (
-    <Dialog open={!!true}>
+    <Dialog open>
       <DialogTitle>
         Change Email:
         <IconButton

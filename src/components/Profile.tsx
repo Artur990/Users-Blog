@@ -17,7 +17,7 @@ const Profile = () => {
   const { navigate, setName, name, photoURL, handleSubmit, handleChange } =
     useProfile()
   return (
-    <Dialog open={!!true}>
+    <Dialog open>
       <DialogTitle>
         Profile
         <IconButton

@@ -1,4 +1,4 @@
-export type EditUserType = {
+export interface EditUserType {
   email: string
   isAdmin: boolean
   name: string

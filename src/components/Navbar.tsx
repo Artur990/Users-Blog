@@ -12,10 +12,11 @@ import Tooltip from '@mui/material/Tooltip'
 import MenuItem from '@mui/material/MenuItem'
 import AdbIcon from '@mui/icons-material/Adb'
 
-import { Link } from '@mui/material'
+import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 
 const Navbar: React.FC = () => {
+  const navigate = useNavigate()
   const { currentUsers, logout } = useAuth()
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
@@ -43,7 +44,7 @@ const Navbar: React.FC = () => {
           <Typography
             variant="h6"
             component="a"
-            href="/"
+            onClick={() => navigate('/')}
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex', fontSize: '2.0rem' },
@@ -59,7 +60,7 @@ const Navbar: React.FC = () => {
           <Typography
             variant="h6"
             component="a"
-            href="/"
+            onClick={() => navigate('/')}
             sx={{
               mr: 2,
               display: { xs: 'flex', md: 'none' },
@@ -75,7 +76,11 @@ const Navbar: React.FC = () => {
           </Typography>
           {currentUsers?.email ? (
             <Box sx={{ flexGrow: 0 }}>
-              <Button variant="outlined" href="/createPost" sx={{ margin: 2 }}>
+              <Button
+                variant="outlined"
+                onClick={() => navigate('/createPost')}
+                sx={{ margin: 2 }}
+              >
                 Post
               </Button>
               <Tooltip title="Open settings">
@@ -101,17 +106,29 @@ const Navbar: React.FC = () => {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                <Link href="/profile" underline="none" textAlign="center">
+                <Link
+                  to="/profile"
+                  style={{ textDecoration: 'none', textAlign: 'center' }}
+                >
                   <MenuItem>Profile</MenuItem>
                 </Link>
-                <Link href="/editUsers" underline="none" textAlign="center">
+                <Link
+                  to="/editUsers"
+                  style={{ textDecoration: 'none', textAlign: 'center' }}
+                >
                   <MenuItem>Usersy</MenuItem>
                 </Link>
-                <Link href="/myPost" underline="none" textAlign="center">
+                <Link
+                  to="/myPost"
+                  style={{ textDecoration: 'none', textAlign: 'center' }}
+                >
                   <MenuItem>My posts</MenuItem>
                 </Link>
 
-                <Link href="/reAuth" underline="none" textAlign="center">
+                <Link
+                  to="/reAuth"
+                  style={{ textDecoration: 'none', textAlign: 'center' }}
+                >
                   <MenuItem onClick={handleCloseUserMenu}>
                     Edit the data
                   </MenuItem>
@@ -123,7 +140,7 @@ const Navbar: React.FC = () => {
             </Box>
           ) : (
             <Box>
-              <Button variant="outlined" href="/login" sx={{ margin: 2 }}>
+              <Button onClick={() => navigate('/login')} variant="contained">
                 Join now!
               </Button>
             </Box>
