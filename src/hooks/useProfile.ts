@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { updateProfile } from 'firebase/auth'
 import { useAuth } from '../context/AuthContext'
 import { deleteFile } from '../firebase/deleteFile'
-import { uploadFile } from '../firebase/uploadFile'
+// import { uploadFile } from '../firebase/uploadFile'
 import { updateUserRecords } from '../firebase/updateUserRecords'
 
 export const useProfile = () => {
@@ -30,11 +30,11 @@ export const useProfile = () => {
     try {
       if (fileState) {
         const imageName = uuidv4() + fileState?.name.split('.').pop()
-        const url = await uploadFile(
-          fileState,
-          `profile/${currentUsers?.uid}/${imageName}`
-        )
-        console.log('1')
+        // const url = await uploadFile(
+        //   fileState,
+        //   `profile/${currentUsers?.uid}/${imageName}`
+        // )
+        console.log(imageName)
         if (currentUsers?.photoURL) {
           const prevImage = currentUsers?.photoURL
             ?.split(`${currentUsers?.uid}%2F`)[1]
@@ -45,6 +45,8 @@ export const useProfile = () => {
             toast.error('something went wrong')
           }
         }
+        const url =
+          'https://firebasestorage.googleapis.com/v0/b/react-http-c10cb.appspot.com/o/profile%2FMxnctT4zNdQnzWHYwTjCApHS1AJ3%2F44547b2c-6f70-4488-9ce4-15aad0174521jfif?alt=media&token=83505e47-2944-413e-a750-31a40a2659c0'
         userObj = { photoURL: url, isAdmin: true } as any
         imagesObj = { ...imagesObj, uPhoto: url } as any
       }

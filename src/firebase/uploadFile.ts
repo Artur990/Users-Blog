@@ -7,8 +7,10 @@ export const uploadFile = (file: any, filePath: any) => {
     try {
       uploadBytes(storageRef, file)
       const url = getDownloadURL(storageRef)
+      console.log(url.then((res) => console.log(res)))
       resolve(url)
     } catch (error) {
+      console.log('bed')
       reject(error)
     }
   })

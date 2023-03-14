@@ -25,6 +25,7 @@ export const updateUserRecords = (
 ): Promise<any> => {
   return new Promise((resolve, reject) => {
     try {
+      console.log('hej')
       const snapshot = getQueryDocs(collectionName, uid) as any
       const updatePromises = [] as any
       snapshot.forEach((document: any) => {
