@@ -1,6 +1,4 @@
 import {
-  DocumentData,
-  QuerySnapshot,
   collection,
   doc,
   getDocs,
@@ -10,33 +8,24 @@ import {
 } from 'firebase/firestore'
 import { db } from './config'
 
-const getQueryDocs = (
-  collectionName: string,
-  uid: string
-): Promise<QuerySnapshot<DocumentData>> => {
-  const q = query(collection(db, collectionName), where('uid', '==', uid))
-  return getDocs<DocumentData>(q)
-}
-
-export const updateUserRecords = (
+const updateUserRecords = async (
   collectionName: string,
   uid: string,
   updatedObj: any
-): Promise<any> => {
-  return new Promise((resolve, reject) => {
-    try {
-      console.log('hej')
-      const snapshot = getQueryDocs(collectionName, uid) as any
-      const updatePromises = [] as any
-      snapshot.forEach((document: any) => {
-        updatePromises.push(
-          updateDoc(doc(db, collectionName, document.id), updatedObj)
-        )
-      })
-      Promise.all(updatePromises)
-      resolve(updatePromises)
-    } catch (error) {
-      reject(error)
-    }
-  })
+) => {
+  const q = query(collection(db, collectionName), where('uid', '==', uid))
+  try {
+    const snapshot = await getDocs(q)
+    const updatePromises: any = []
+    snapshot.forEach((document) => {
+      updatePromises.push(
+        updateDoc(doc(db, collectionName, document.id), updatedObj)
+      )
+    })
+    await Promise.all(updatePromises)
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
 }
+export default updateUserRecords

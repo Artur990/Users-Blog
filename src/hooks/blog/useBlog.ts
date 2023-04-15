@@ -15,7 +15,7 @@ import { db } from '../../firebase/config'
 import { useAuth } from '../../context/AuthContext'
 import { PostType } from '../../types/postType'
 
-export const useBlog = (...post: any) => {
+export const useBlog = (post: boolean) => {
   const [blog, setBlog] = useState<PostType[] | null>(null)
   const { setIsLoading, currentUsers } = useAuth()
 
@@ -24,7 +24,7 @@ export const useBlog = (...post: any) => {
 
     const q = query(
       collection(db, 'react-blog2') as CollectionReference<PostType>,
-      post.post
+      post
         ? where('user', '==', currentUsers?.uid)
         : orderBy('createdAT', 'desc')
     )
@@ -33,7 +33,7 @@ export const useBlog = (...post: any) => {
     })
     setIsLoading(false)
     return unSubscribe
-  }, [currentUsers?.uid, post.post, setIsLoading])
+  }, [currentUsers?.uid, post, setIsLoading])
 
   const deletePost = async (id: string) => {
     setIsLoading(true)

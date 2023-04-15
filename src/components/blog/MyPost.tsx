@@ -2,6 +2,7 @@ import { Box, Container } from '@mui/system'
 import { Avatar, IconButton, Paper, Typography } from '@mui/material'
 import { BorderColorSharp, DeleteForeverSharp } from '@mui/icons-material'
 
+import { Link } from 'react-router-dom'
 import { useBlog } from '../../hooks/blog/useBlog'
 
 const MyPost = () => {
@@ -80,17 +81,9 @@ const MyPost = () => {
               <BorderColorSharp
                 sx={{ marginLeft: 2, color: 'rgba(0, 247, 21, 0.548)' }}
               />
-              <Typography
-                href={`editPost/${e.id}`}
-                variant="subtitle1"
-                component="a"
-                sx={{
-                  textDecoration: 'none',
-                  color: 'black',
-                }}
-              >
+              <Link to={`editPost/${e.id}`} replace>
                 Edit
-              </Typography>
+              </Link>
             </Box>
           </Paper>
         )

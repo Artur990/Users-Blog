@@ -11,7 +11,6 @@ export const useLoginUser = () => {
   const { login } = useAuth()
   const { handleSubmit, setValue, ...form } = useForm<LoginSchemaType>({
     resolver: zodResolver(LoginSchema),
-    mode: 'onBlur',
   })
 
   const [isLoading, setIsLoading] = useState<boolean>(false)

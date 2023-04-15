@@ -35,7 +35,7 @@ const Navbar: React.FC = () => {
         <Toolbar
           sx={{
             background: 'white',
-            display: 'flec',
+            display: 'flex',
             justifyContent: 'space-between',
           }}
         >

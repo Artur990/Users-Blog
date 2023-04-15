@@ -36,19 +36,20 @@ const JSXRouter = createBrowserRouter(
       <Route path="/" element={<Blogs />} />
       <Route element={<PrivatedRoute />}>
         <Route
-          path="post/:id"
+          path="/post/:id"
           element={<Post />}
           errorElement={<Error />}
           loader={blogLoader}
         />
         <Route
-          path="editPost/:post"
+          path="myPost/editPost/:post"
           element={<EditPost />}
           errorElement={<Error />}
           loader={postLoader}
         />
         <Route path="/profile" element={<Profile />} />
         <Route path="/myPost" element={<MyPost />} />
+
         <Route path="/createPost" element={<CreatePost />} />
         <Route path="/reAuth" element={<ReAuth />} />
         <Route path="/editUsers" element={<EditUsers />} />

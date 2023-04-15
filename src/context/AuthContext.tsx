@@ -187,7 +187,6 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
       if (firebaseUser) {
         setcurrentUsers(firebaseUser)
       }
-      console.log('user status changed')
     })
     return unsubscribe
   }, [])

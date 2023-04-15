@@ -44,6 +44,7 @@ module.exports = {
       "error",
       { disallowArithmeticOperators: false },
     ],
+    // "no-async-promise-executor": "off",
     // "consistent-retur": ["error", { treatUndefinedAsUnspecified: false }],
   },
 };

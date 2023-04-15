@@ -1,14 +1,8 @@
-import {
-  Avatar,
-  Button,
-  IconButton,
-  Link,
-  Paper,
-  Typography,
-} from '@mui/material'
+import { Avatar, Button, IconButton, Paper, Typography } from '@mui/material'
 import { Box, Container } from '@mui/system'
 import moment from 'moment'
 
+import { Link } from 'react-router-dom'
 import { PostType } from '../../types/postType'
 
 const Message = (props: PostType) => (
@@ -83,7 +77,7 @@ const Message = (props: PostType) => (
           >
             {!props?.comments?.length ? 0 : props?.comments?.length} Comments
           </Typography>
-          <Link href={`post/${props?.id}`} underline="none">
+          <Link to={`post/${props?.id}`}>
             <Button sx={{ margin: 1, textTransform: 'none' }}>add</Button>
           </Link>
         </Box>
