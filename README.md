@@ -1,5 +1,7 @@
 # Mój projekt:
 
+## Description 
+UsersBlog - Blogging platform with user authentication system
 ## Technologie:
 
 ### Główne:
