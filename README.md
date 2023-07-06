@@ -1,4 +1,4 @@
-# Mój projekt:
+# My project:
 
 ## Description 
 UsersBlog - Blogging platform with user authentication system
